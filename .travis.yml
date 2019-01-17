@@ -2,9 +2,7 @@ language: java
 before_install: chmod +x gradlew
 services:
 - mysql
-branches:
-  only:
-    - master
+
 script: "./gradlew build --info"
 deploy:
   skip_cleanup: true
@@ -14,4 +12,7 @@ deploy:
   file_glob: true
   file: "build/libs/*.jar"
   on:
+    branches:
+      only:
+        - master
     repo: pvepamb1/Home-Automation
