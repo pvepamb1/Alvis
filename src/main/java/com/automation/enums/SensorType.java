@@ -1,5 +1,5 @@
 package com.automation.enums;
 
 public enum SensorType {
-	WATERFLOW
+	WATERFLOW, LDR
 }
