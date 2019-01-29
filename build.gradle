@@ -16,13 +16,16 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.automation'
-version = '0.1.0'
+version = '0.5.3'
 sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
 }
 
+bootJar {
+	launchScript()
+}
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
@@ -35,15 +38,59 @@ dependencies {
 }
 
 task debianClean(type: Delete) {
-	delete 'build/debian'	
+	group = 'debian'
+	description = 'deletes build directory'
+	delete 'build/'	
 }
 
-task debianPrepare(dependsOn: [debianClean]) { 
-	doLast {
+task buildTar(type: Tar){
+	
+	group = 'debian'
+	description = 'creates a tar'
+	
+	compression = Compression.GZIP
+	archiveName = "homeauto_${version}.orig.tar.gz"
+	destinationDir = file("build/debian/")
+	from "build/libs/", "gradle/service"
 
+}
+
+task replaceWords(type: Copy) {
+
+	group = 'debian'
+	description = 'replaces words'
+	
+    from "gradle/debian/changelog"
+    into "build/tmp/"
+    filter { line -> line.replaceAll('xxx', version) }
+}
+
+task ppaScripts(type: Exec) {
+    commandLine "sh", "./gradle/script/debuild-signed.sh"
+    args "homeauto-${version}"
+    
+}
+
+task listDir(type: Exec){
+
+	commandLine "ls", "build/"
+}
+
+task debianPrepare() { 
+	
+	group = 'debian'
+	description = 'assembles a debian source package folder'
+	
+	doLast {
+	
 		copy {
-			from "gradle/debian"
-			into "build/debian/homeauto/debian"
+			from "gradle/debian", "build/tmp/changelog"
+			into "build/debian/homeauto-${version}/debian"
+		}
+
+		copy{
+			from "build/libs", "gradle/service"
+			into "build/debian/homeauto-${version}/"
 		}
 
 	}

@@ -1,0 +1,2 @@
+*.jar usr/share/homeauto
+homeauto.service /etc/systemd/system

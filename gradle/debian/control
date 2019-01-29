@@ -1,0 +1,15 @@
+Source: homeauto
+Section: java
+Priority: optional
+Maintainer: Tuttu <homeautomation137@gmail.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: https://anonscm.debian.org/collab-maint/homeauto.git
+#Vcs-Browser: https://anonscm.debian.org/cgit/collab-maint/homeauto.git
+
+Package: homeauto
+Architecture: all
+Depends: ${misc:Depends}
+Description: <insert up to 60 chars description>
+ <insert long description, indented with spaces>
