@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.automation.embeddable.Sensor;
+import com.automation.notification.LDRNotifier;
 import com.automation.sensor.LDR;
 import com.automation.service.LDRService;
 
@@ -15,15 +16,19 @@ public class LDRController implements RestlessController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(LDRController.class);
 
 	LDRService service;
+	LDRNotifier notifier;
 
 	@Autowired
-	public LDRController(LDRService service) {
+	public LDRController(LDRService service, LDRNotifier notifier) {
 		this.service = service;
+		this.notifier = notifier;
 	}
 
 	public void updateData(Sensor body) {
 		LOGGER.info("Storing {}", body);
-		service.store(new LDR(body));
+		LDR ldr = new LDR(body);
+		service.store(ldr);
+		notifier.notifyUser(ldr);
 	}
-
+	
 }
