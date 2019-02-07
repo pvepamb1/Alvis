@@ -14,7 +14,6 @@ cache:
      - $HOME/.cache
 script:
   - ./gradlew build --info
-  - ./gradlew debianPrepare
   - git submodule update --init --recursive
   - git describe --long
   - git clone https://github.com/packpack/packpack.git packpack
