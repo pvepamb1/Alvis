@@ -23,5 +23,3 @@ deploy:
   dist: ${OS}/${DIST}
   package_glob: build/*.deb
   skip_cleanup: true
-  on:
-    condition: -n "${OS}" && -n "${DIST}" && -n "${PACKAGECLOUD_TOKEN}"
