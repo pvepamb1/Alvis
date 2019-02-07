@@ -3,7 +3,6 @@ sudo: required
 env:
     matrix:
       - OS=ubuntu DIST=xenial
-      - OS=raspbian DIST=stretch
 before_install:
   - chmod +x gradlew
   - mysql -e 'CREATE DATABASE home_dev;'
