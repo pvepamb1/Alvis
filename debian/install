@@ -1,2 +1,2 @@
-libs/*.jar usr/share/homeauto/libs
-gradle/service/homeauto.service /etc/systemd/system
+*.jar usr/share/homeauto/libs
+homeauto.service /etc/systemd/system
