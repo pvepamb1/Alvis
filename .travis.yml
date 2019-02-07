@@ -12,7 +12,6 @@ services:
 script:
   - ./gradlew build --info
   - git submodule update --init --recursive
-  - git describe --long
   - git clone https://github.com/packpack/packpack.git packpack
   - packpack/packpack
   - ls build/
