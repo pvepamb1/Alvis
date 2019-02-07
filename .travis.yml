@@ -18,6 +18,8 @@ script:
   - git describe --long
   - git clone https://github.com/packpack/packpack.git packpack
   - packpack/packpack
+  - pwd
+  - ls
 deploy:
   provider: packagecloud
   username: ${PACKAGECLOUD_USER}
