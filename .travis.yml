@@ -1,8 +1,7 @@
 language: java
 sudo: required
 env:
-    matrix:
-      - OS=ubuntu DIST=xenial
+  - OS=ubuntu DIST=xenial
 before_install:
   - chmod +x gradlew
   - mysql -e 'CREATE DATABASE home_dev;'
@@ -14,7 +13,6 @@ script:
   - git submodule update --init --recursive
   - git clone https://github.com/packpack/packpack.git packpack
   - packpack/packpack
-  - ls build/
 deploy:
   provider: packagecloud
   username: ${PACKAGECLOUD_USER}
@@ -23,3 +21,5 @@ deploy:
   dist: ${OS}/${DIST}
   package_glob: build/*.deb
   skip_cleanup: true
+on:
+    all_branches: true
