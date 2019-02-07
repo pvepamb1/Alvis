@@ -9,9 +9,6 @@ before_install:
 services:
   - mysql
   - docker
-cache:
-    directories:
-     - $HOME/.cache
 script:
   - ./gradlew build --info
   - git submodule update --init --recursive
