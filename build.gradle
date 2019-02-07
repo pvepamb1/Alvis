@@ -73,7 +73,7 @@ task ppaScripts(type: Exec) {
 
 task listDir(type: Exec){
 
-	commandLine "ls", "/"
+	commandLine "ls", "."
 }
 
 task debianPrepare() { 
@@ -85,7 +85,7 @@ task debianPrepare() {
 
 		copy{
 			from "build/libs", "gradle/service"
-			into "/"
+			into "."
 		}
 
 	}
