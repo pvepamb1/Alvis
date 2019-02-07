@@ -73,7 +73,7 @@ task ppaScripts(type: Exec) {
 
 task listDir(type: Exec){
 
-	commandLine "ls", "."
+	commandLine "ls", "build/"
 }
 
 task debianPrepare() { 
@@ -82,10 +82,15 @@ task debianPrepare() {
 	description = 'assembles a debian source package folder'
 	
 	doLast {
+	
+		copy {
+			from "gradle/debian", "build/tmp/changelog"
+			into "build/debian/homeauto-${version}/debian"
+		}
 
 		copy{
 			from "build/libs", "gradle/service"
-			into "."
+			into "build/debian/homeauto-${version}/"
 		}
 
 	}

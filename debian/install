@@ -1,2 +1,1 @@
-*.jar usr/share/homeauto/libs
-homeauto.service /etc/systemd/system
+* usr/share/homeauto/libs
