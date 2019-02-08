@@ -10,6 +10,7 @@ services:
   - docker
 script:
   - ./gradlew build --info
+  - touch README2.md
   - git submodule update --init --recursive
   - git clone https://github.com/packpack/packpack.git packpack
   - packpack/packpack
