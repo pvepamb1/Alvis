@@ -20,7 +20,7 @@ public class SensorConfigBean {
 
 	private Map<String, Properties> allProperties;
 
-	private static final String configDir = "../config/";
+	private static final String configDir = "~/.homeauto/config/";
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorConfigBean.class);
 	
