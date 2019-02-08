@@ -1,12 +1,16 @@
-language: c
+language: java
 sudo: required
 env:
   - OS=ubuntu DIST=xenial
+before_install:
+  - chmod +x gradlew
+  - mysql -e 'CREATE DATABASE home_dev;'
 services:
+  - mysql
   - docker
 script:
-  - touch README2.md
-  - git add README2.md
+  - ./gradlew build --info
+  - git add build/libs/*
   - git submodule update --init --recursive
   - git clone https://github.com/packpack/packpack.git packpack
   - packpack/packpack
@@ -19,4 +23,4 @@ deploy:
   package_glob: build/*.deb
   skip_cleanup: true
   on:
-    branch: packagecloud
+    all_branches: true
