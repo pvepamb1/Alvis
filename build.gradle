@@ -16,15 +16,11 @@ apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
 group = 'com.automation'
-version = '0.6.2'
+version = '0.6.3'
 sourceCompatibility = 1.8
 
 repositories {
 	mavenCentral()
-}
-
-springBoot {
-    executable = true
 }
 
 bootJar {

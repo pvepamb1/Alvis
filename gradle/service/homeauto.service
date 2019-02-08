@@ -4,7 +4,8 @@ After=syslog.target
 
 [Service]
 User=ubuntu
-ExecStart=/usr/share/homeuato/libs/*.jar
+ExecStart=/usr/share/homeauto/libs/*.jar
+WorkingDirectory=/usr/share/homeauto/libs/
 SuccessExitStatus=143
 
 [Install]
