@@ -1,2 +1,3 @@
 build/libs/*.jar usr/share/homeauto/libs
 gradle/service/homeauto.service /etc/systemd/system
+gradle/script/start.sh /usr/share/homeeauto

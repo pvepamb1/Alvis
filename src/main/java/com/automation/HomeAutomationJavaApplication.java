@@ -10,7 +10,7 @@ public class HomeAutomationJavaApplication {
 
 	public static void main(String[] args) {
 		new SpringApplicationBuilder(HomeAutomationJavaApplication.class)
-				.properties("spring.config.name:application,db", "spring.config.location:classpath:/, ~/.homeauto/config/")
+				.properties("spring.config.name:application,db", "spring.config.location:classpath:/," + System.getenv("HOME") + "/.homeauto/config/")
 				.build()
 				.run(args);
 	}

@@ -20,7 +20,7 @@ public class SensorConfigBean {
 
 	private Map<String, Properties> allProperties;
 
-	private static final String configDir = "~/.homeauto/config/";
+	private static final String configDir = System.getenv("HOME") + "/.homeauto/config/";
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorConfigBean.class);
 	
@@ -38,12 +38,12 @@ public class SensorConfigBean {
 			try {
 				props.load(	new FileInputStream(configDir + name + ".properties"));
 				LOGGER.info("Loaded configuration for {}", name);
+				allProperties.put(name, props);
 			} catch (FileNotFoundException e) {
 				LOGGER.warn("File not found {}{}.properties", configDir,name );
 			} catch (IOException e) {
 				LOGGER.warn("IO Exception {}", e.getMessage());
 			}
-			allProperties.put(name, props);
 		});
 	}
 
