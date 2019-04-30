@@ -1,7 +1,6 @@
 package com.automation.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -63,9 +62,10 @@ public class SensorDataController {
 	public void updateLookup(@RequestBody List<SensorTypeLookup> body) {
 		for (SensorTypeLookup sensorData : body) {
 			repo.save(sensorData);
+			SimpleControllerFactory.getController(sensorData.getType()).createConfigFile(sensorData);
 		}
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/fetchtype")
 	public SensorType[] retrieveTypes() {
 		return SensorType.values();
