@@ -66,6 +66,11 @@ public class SensorDataController {
 		}
 	}
 	
+	@RequestMapping(method = RequestMethod.GET, value = "/devices")
+	public Iterable<SensorTypeLookup> retrieveMapped() {
+		return repo.findAll();
+	}
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/fetchtype")
 	public SensorType[] retrieveTypes() {
 		return SensorType.values();
