@@ -3,6 +3,7 @@ package com.automation.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,13 +25,10 @@ public class SensorDataController {
 
 	private DeviceAddressService macService;
 	private SensorTypeLookupRepository repo;
-	private RestlessController controller;
 
 	@Autowired
-	public SensorDataController(DeviceAddressService macService, SensorTypeLookupRepository repo,
-			RestlessController controller) {
+	public SensorDataController(DeviceAddressService macService, SensorTypeLookupRepository repo) {
 		this.repo = repo;
-		this.controller = controller;
 		this.macService = macService;
 	}
 
@@ -41,8 +39,7 @@ public class SensorDataController {
 		if (repo.existsById(id)) {
 			type = repo.findById(id).get().getType();
 			if (type != null) {
-				controller = SimpleControllerFactory.getController(type);
-				controller.updateData(body);
+				SimpleControllerFactory.getController(type).updateData(body);
 			}
 		}
 	}
@@ -69,6 +66,12 @@ public class SensorDataController {
 	@RequestMapping(method = RequestMethod.GET, value = "/devices")
 	public Iterable<SensorTypeLookup> retrieveMapped() {
 		return repo.findAll();
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value="/sensor/{mac}/{id}")
+	public String getSensorPage(@PathVariable String mac, @PathVariable String id) {
+		String ip = macService.retrieve(mac).get().getIp();
+		return new RestTemplate().getForObject("http://"+ip+"/", String.class);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/fetchtype")

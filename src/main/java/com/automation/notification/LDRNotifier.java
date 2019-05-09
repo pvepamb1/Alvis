@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.automation.customlogic.SensorConfigBean;
 import com.automation.sensor.LDR;
+import com.automation.table.SensorTypeLookup;
 
 @Component
 public class LDRNotifier {
@@ -58,6 +59,26 @@ public class LDRNotifier {
 			output = new FileOutputStream(System.getenv("HOME") + "/.homeauto/config/" + identifier + ".properties");
 			prop.setProperty("emailSent", value);
 			prop.store(output, null);
+
+		} catch (IOException io) {
+			io.printStackTrace();
+			LOGGER.warn("{}", io.getMessage());
+		}
+	}
+	
+	public void createConfigFile(SensorTypeLookup sensor) {
+		OutputStream output = null;
+		Properties prop = new Properties();
+		String identifier = sensor.getId().getMac().getMac().replaceAll(":", "") + sensor.getId().getId();
+
+		try {
+
+			output = new FileOutputStream(System.getenv("HOME") + "/.homeauto/config/" + identifier + ".properties");
+			prop.setProperty("emailSent", "false");
+			prop.setProperty("min", "200");
+			prop.setProperty("max", "700");
+			prop.store(output, null);
+			configBean.getAllProperties().put(identifier, prop);
 
 		} catch (IOException io) {
 			io.printStackTrace();
