@@ -11,12 +11,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.automation.repository.SensorTypeLookupRepository;
+import com.automation.service.SensorLookupService;
 
 @Component
 public class SensorConfigBean {
 
-	SensorTypeLookupRepository repo;
+	SensorLookupService lookupService;
 
 	private Map<String, Properties> allProperties;
 
@@ -25,15 +25,15 @@ public class SensorConfigBean {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorConfigBean.class);
 	
 	@Autowired
-	public SensorConfigBean(SensorTypeLookupRepository repo, Map<String, Properties> allProperties) {
-		this.repo = repo;
+	public SensorConfigBean(SensorLookupService lookupService, Map<String, Properties> allProperties) {
+		this.lookupService = lookupService;
 		this.allProperties = allProperties;
 		loadConfig();
 	}
 
 	public void loadConfig() {
-		repo.findAll().forEach(x -> {
-			String name = x.getId().getMac().getMac().replaceAll(":", "") + x.getId().getId();
+		lookupService.findAll().forEach(x -> {
+			String name = x.getAlias();
 			Properties props = new Properties();
 			try {
 				props.load(	new FileInputStream(configDir + name + ".properties"));

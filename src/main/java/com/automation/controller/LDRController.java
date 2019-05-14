@@ -9,7 +9,7 @@ import com.automation.embeddable.Sensor;
 import com.automation.notification.LDRNotifier;
 import com.automation.sensor.LDR;
 import com.automation.service.LDRService;
-import com.automation.table.SensorTypeLookup;
+import com.automation.table.SensorLookup;
 
 @Component
 public class LDRController implements RestlessController {
@@ -33,7 +33,7 @@ public class LDRController implements RestlessController {
 	}
 
 	@Override
-	public void createConfigFile(SensorTypeLookup sensor) {
+	public void createConfigFile(SensorLookup sensor) {
 		notifier.createConfigFile(sensor);
 	}
 	

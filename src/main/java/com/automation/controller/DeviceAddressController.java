@@ -1,7 +1,5 @@
 package com.automation.controller;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,14 +16,10 @@ public class DeviceAddressController {
 
 	@Autowired
 	private DeviceAddressService service;
-	
-	@RequestMapping(method=RequestMethod.POST, value="/heartbeat")
+
+	@RequestMapping(method = RequestMethod.POST, value = "/heartbeat")
 	public void updatePulse(@RequestBody DeviceAddress body) {
 		service.store(body);
 	}
-	
-	@RequestMapping(method=RequestMethod.POST, value="/get")
-	public Optional<DeviceAddress> get(@RequestBody String macAddress) {
-		return service.retrieve(macAddress);
-	}
+
 }

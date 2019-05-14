@@ -17,18 +17,18 @@ import lombok.NoArgsConstructor;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class SensorTypeLookupID implements Serializable {
+public class SensorLookupID implements Serializable {
 
 	private static final long serialVersionUID = -7769334084663720925L;
 
 	@ManyToOne
 	@JoinColumn
-	private DeviceAddress mac;
+	private DeviceAddress address;
 	@Column(length = 5)
 	private String id;
 
-	public SensorTypeLookupID(Sensor sensor) {
-		this.mac = sensor.getMac();
+	public SensorLookupID(Sensor sensor) {
+		this.address = sensor.getMac();
 		this.id = sensor.getId();
 	}
 

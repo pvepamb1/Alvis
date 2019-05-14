@@ -1,9 +1,10 @@
 package com.automation.table;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
-import com.automation.embeddable.SensorTypeLookupID;
+import com.automation.embeddable.SensorLookupID;
 import com.automation.enums.SensorType;
 
 import lombok.AllArgsConstructor;
@@ -14,10 +15,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class SensorTypeLookup {
+public class SensorLookup {
 
 	@Id
-	private SensorTypeLookupID id;
+	private SensorLookupID id;
+	
 	private SensorType type;
+	
+	@Column(length = 15, unique=true)
+	private String alias;
 
 }

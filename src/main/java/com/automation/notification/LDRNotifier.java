@@ -13,7 +13,8 @@ import org.springframework.stereotype.Component;
 
 import com.automation.customlogic.SensorConfigBean;
 import com.automation.sensor.LDR;
-import com.automation.table.SensorTypeLookup;
+import com.automation.service.SensorLookupService;
+import com.automation.table.SensorLookup;
 
 @Component
 public class LDRNotifier {
@@ -22,17 +23,19 @@ public class LDRNotifier {
 	String to;
 	Mailer mailer;
 	SensorConfigBean configBean;
+	SensorLookupService lookupService;
 	private static final Logger LOGGER = LoggerFactory.getLogger(LDRNotifier.class);
 
 	@Autowired
-	public LDRNotifier(Mailer mailer, SensorConfigBean configBean) {
+	public LDRNotifier(Mailer mailer, SensorConfigBean configBean, SensorLookupService lookupService) {
 		this.mailer = mailer;
 		this.configBean = configBean;
+		this.lookupService = lookupService;
 	}
 
 	public void notifyUser(LDR ldr) {
 
-		String identifier = ldr.getSensor().getMac().getMac().replaceAll(":", "") + ldr.getSensor().getId();
+		String identifier = lookupService.findById(ldr.getSensor().getMac(), ldr.getSensor().getId()).get().getAlias();
 		Properties prop = configBean.getAllProperties().get(identifier);
 		if (prop != null) {
 			if (Integer.parseInt(ldr.getValue()) > Integer.parseInt(prop.getProperty("max"))
@@ -66,10 +69,10 @@ public class LDRNotifier {
 		}
 	}
 	
-	public void createConfigFile(SensorTypeLookup sensor) {
+	public void createConfigFile(SensorLookup sensor) {
 		OutputStream output = null;
 		Properties prop = new Properties();
-		String identifier = sensor.getId().getMac().getMac().replaceAll(":", "") + sensor.getId().getId();
+		String identifier = sensor.getAlias();
 
 		try {
 
