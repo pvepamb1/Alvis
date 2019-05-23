@@ -25,7 +25,7 @@ public class Sensor {
 	@Column(name = "sensor_id", length = 50)
 	private String id;
 
-	@Transient
+	//@Transient
 	@Column(length = 15)
 	private String value;
 

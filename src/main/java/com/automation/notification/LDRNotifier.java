@@ -35,7 +35,7 @@ public class LDRNotifier {
 
 	public void notifyUser(LDR ldr) {
 
-		String identifier = lookupService.findById(ldr.getSensor().getMac(), ldr.getSensor().getId()).get().getAlias();
+		String identifier = lookupService.findById(ldr.getMac(), ldr.getId()).get().getAlias();
 		Properties prop = configBean.getAllProperties().get(identifier);
 		if (prop != null) {
 			if (Integer.parseInt(ldr.getValue()) > Integer.parseInt(prop.getProperty("max"))

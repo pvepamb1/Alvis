@@ -13,30 +13,22 @@ import com.automation.embeddable.Sensor;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-public class LDR {
-
-	private Sensor sensor;
+@EqualsAndHashCode(callSuper = true)
+public class LDR extends Sensor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
 	private int primaryId;
 
-	@Column(length = 4)
-	private String value;
-
 	@UpdateTimestamp
 	private LocalDateTime updateDateTime;
-
-	public LDR(Sensor sensor) {
-		this.sensor = sensor;
-		this.value = sensor.getValue();
-	}
 
 }

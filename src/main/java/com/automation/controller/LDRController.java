@@ -27,7 +27,7 @@ public class LDRController implements RestlessController {
 
 	public void updateData(Sensor body) {
 		LOGGER.info("Storing {}", body);
-		LDR ldr = new LDR(body);
+		LDR ldr = (LDR) body;
 		service.store(ldr);
 		notifier.notifyUser(ldr);
 	}
