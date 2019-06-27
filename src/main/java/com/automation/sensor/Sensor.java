@@ -1,11 +1,9 @@
-package com.automation.embeddable;
+package com.automation.sensor;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Transient;
-
+import javax.persistence.MappedSuperclass;
 import com.automation.table.DeviceAddress;
 
 import lombok.AllArgsConstructor;
@@ -13,7 +11,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Embeddable
+@MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
 public class Sensor {
@@ -25,7 +23,6 @@ public class Sensor {
 	@Column(name = "sensor_id", length = 50)
 	private String id;
 
-	//@Transient
 	@Column(length = 15)
 	private String value;
 

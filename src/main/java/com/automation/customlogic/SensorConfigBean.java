@@ -33,9 +33,9 @@ public class SensorConfigBean {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorConfigBean.class);
 	
 	@Autowired
-	public SensorConfigBean(SensorLookupService lookupService, ConcurrentHashMap<String, Properties> allProperties) {
+	public SensorConfigBean(SensorLookupService lookupService) {
 		this.lookupService = lookupService;
-		this.allProperties = allProperties;
+		this.allProperties = new ConcurrentHashMap<>();
 		loadConfig();
 	}
 

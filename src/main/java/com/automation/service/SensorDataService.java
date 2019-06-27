@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.automation.embeddable.Sensor;
 import com.automation.embeddable.SensorLookupID;
 import com.automation.enums.SensorType;
 import com.automation.factory.SimpleControllerFactory;
+import com.automation.sensor.Sensor;
 import com.automation.table.SensorLookup;
 import com.automation.util.IDWrapper;
 

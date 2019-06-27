@@ -5,9 +5,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.automation.embeddable.Sensor;
 import com.automation.notification.LDRNotifier;
 import com.automation.sensor.LDR;
+import com.automation.sensor.Sensor;
 import com.automation.service.LDRService;
 import com.automation.table.SensorLookup;
 

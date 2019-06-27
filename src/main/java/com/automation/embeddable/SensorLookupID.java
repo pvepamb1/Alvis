@@ -7,6 +7,7 @@ import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.automation.sensor.Sensor;
 import com.automation.table.DeviceAddress;
 
 import lombok.AllArgsConstructor;
