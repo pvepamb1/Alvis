@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '2.0.3.RELEASE'
+		springBootVersion = '2.1.6.RELEASE'
 	}
 	repositories {
 		mavenCentral()
@@ -17,7 +17,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'com.automation'
 version = '0.6.5'
-sourceCompatibility = 1.8
+sourceCompatibility = 1.11
 
 repositories {
 	mavenCentral()
@@ -32,9 +32,11 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-mail')
+	compile('javax.xml.bind:jaxb-api')
 	runtime('mysql:mysql-connector-java')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	compileOnly "org.projectlombok:lombok:1.16.16"
+	compileOnly "org.projectlombok:lombok:1.18.8"
+	annotationProcessor "org.projectlombok:lombok:1.18.8"
 }
 
 task debianClean(type: Delete) {

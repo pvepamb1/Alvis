@@ -16,7 +16,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class HomeAutomationJavaApplication {
 
 	public static void main(String[] args) {
-		//application and db props
+		//search for application and db props
 		new SpringApplicationBuilder(HomeAutomationJavaApplication.class)
 				.properties("spring.config.name:application,db", "spring.config.location:classpath:/," + System.getenv("HOME") + "/.homeauto/config/")
 				.build()
