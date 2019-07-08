@@ -2,11 +2,14 @@ package com.automation.repository;
 
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.automation.embeddable.SensorLookupID;
+import com.automation.domain.SensorLookup;
+import com.automation.domain.embeddable.SensorLookupID;
 import com.automation.enums.SensorType;
-import com.automation.table.SensorLookup;
 
 /**
  * Specifies methods used to obtain and modify sensor-lookup related information
@@ -30,4 +33,18 @@ public interface SensorLookupRepository extends CrudRepository<SensorLookup, Sen
      *          If no sensors are found, this method returns null.
      */
 	Optional<SensorLookup> findByAlias(String alias);
+	
+	@Query(value = "SELECT * FROM sensor_lookup sensor WHERE sensor.address_mac= ?1 and sensor.id= ?2",
+			nativeQuery = true)
+	Optional<SensorLookup> findByMacAndId(String mac, String id);
+	
+	@Transactional
+	@Modifying
+	@Query(value = "INSERT INTO sensor_lookup (alias, type, address_mac, id) values (NULL, NULL, ?1, ?2)",
+			nativeQuery = true)
+	void saveUnmapped(String mac, String id);
+	
+	@Query(value = "SELECT ip FROM device_address da, sensor_lookup sl WHERE sl.alias =?1 and sl.address_mac = da.mac",
+			nativeQuery = true)
+	Optional<String> findIpByAlias(String alias);
 }

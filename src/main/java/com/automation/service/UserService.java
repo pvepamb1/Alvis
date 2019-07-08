@@ -11,9 +11,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
+import com.automation.domain.User;
 import com.automation.factory.SimpleSmtpPropsFactory;
 import com.automation.repository.UserRepository;
-import com.automation.table.User;
 
 @Service
 public class UserService {

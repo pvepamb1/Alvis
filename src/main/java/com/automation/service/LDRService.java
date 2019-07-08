@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.automation.domain.sensor.LDR;
 import com.automation.repository.LDRRepository;
-import com.automation.sensor.LDR;
 
 @Service
 public class LDRService {

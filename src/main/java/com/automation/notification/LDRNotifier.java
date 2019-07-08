@@ -12,9 +12,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.automation.customlogic.SensorConfigBean;
-import com.automation.sensor.LDR;
+import com.automation.domain.SensorLookup;
+import com.automation.domain.sensor.LDR;
 import com.automation.service.SensorLookupService;
-import com.automation.table.SensorLookup;
 
 @Component
 public class LDRNotifier {

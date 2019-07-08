@@ -2,7 +2,7 @@ package com.automation.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import com.automation.sensor.LDR;
+import com.automation.domain.sensor.LDR;
 
 /**
  * Specifies methods used to obtain and modify LDR related information

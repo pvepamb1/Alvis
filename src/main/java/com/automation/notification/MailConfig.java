@@ -11,8 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.automation.controller.UserController;
+import com.automation.domain.User;
 import com.automation.factory.SimpleSmtpPropsFactory;
-import com.automation.table.User;
 
 @Configuration
 public class MailConfig {

@@ -7,11 +7,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.automation.domain.DeviceAddress;
 import com.automation.service.DeviceAddressService;
-import com.automation.table.DeviceAddress;
 
 @CrossOrigin
 @RestController
+@RequestMapping(value="/api")
 public class DeviceAddressController {
 
 	@Autowired

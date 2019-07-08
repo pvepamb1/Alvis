@@ -1,6 +1,7 @@
 package com.automation.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,12 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.automation.embeddable.SensorLookupID;
+import com.automation.domain.SensorLookup;
 import com.automation.enums.SensorType;
 import com.automation.factory.SimpleControllerFactory;
-import com.automation.sensor.Sensor;
-import com.automation.table.SensorLookup;
 import com.automation.util.IDWrapper;
+import com.fasterxml.jackson.databind.JsonNode;
 
 @Service
 public class SensorDataService {
@@ -31,10 +31,11 @@ public class SensorDataService {
 		this.macService = macService;
 	}
 
-	public void updateData(@RequestBody Sensor body) {
-		SensorLookupID id = new SensorLookupID(body);
-		if (lookupService.existsById(id)) {
-			SensorType type = lookupService.findById(id).get().getType();
+	public void updateData(JsonNode body) {
+		Optional<SensorLookup> sensor = lookupService.findByMacAndId(body.path("mac").asText(),
+				body.path("id").asText());
+		if (sensor.isPresent()) {
+			SensorType type = sensor.get().getType();
 			if (type != null) {
 				SimpleControllerFactory.getController(type).updateData(body);
 			}
@@ -63,8 +64,7 @@ public class SensorDataService {
 	}
 
 	public String getSensorPage(@PathVariable String alias) {
-		String ip = macService.retrieve(lookupService.findByAlias(alias).get().getId().getAddress().getMac()).get()
-				.getIp();
+		String ip = lookupService.findIpByAlias(alias).get();
 		return new RestTemplate().getForObject("http://" + ip + "/", String.class);
 	}
 

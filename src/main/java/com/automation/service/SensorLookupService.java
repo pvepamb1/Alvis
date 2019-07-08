@@ -7,11 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.automation.embeddable.SensorLookupID;
+import com.automation.domain.DeviceAddress;
+import com.automation.domain.SensorLookup;
+import com.automation.domain.embeddable.SensorLookupID;
 import com.automation.enums.SensorType;
 import com.automation.repository.SensorLookupRepository;
-import com.automation.table.DeviceAddress;
-import com.automation.table.SensorLookup;
 
 @Service
 public class SensorLookupService {
@@ -30,7 +30,7 @@ public class SensorLookupService {
 	}
 
 	public boolean existsById(DeviceAddress address, String id) {
-		return repository.existsById(new SensorLookupID(address, id));
+		return this.existsById(new SensorLookupID(address, id));
 	}
 
 	public Iterable<SensorLookup> findAll() {
@@ -47,7 +47,7 @@ public class SensorLookupService {
 	}
 
 	public void saveUnmapped(DeviceAddress address, String id) {
-		repository.save(new SensorLookup(new SensorLookupID(address, id), null, null));
+		repository.saveUnmapped(address.getMac(), id);
 	}
 
 	public Optional<SensorLookup> findById(SensorLookupID id) {
@@ -55,11 +55,19 @@ public class SensorLookupService {
 	}
 
 	public Optional<SensorLookup> findById(DeviceAddress address, String id) {
-		return repository.findById(new SensorLookupID(address, id));
+		return this.findById(new SensorLookupID(address, id));
 	}
 
 	public Optional<SensorLookup> findByAlias(String alias) {
 		return repository.findByAlias(alias);
+	}
+	
+	public Optional<SensorLookup> findByMacAndId(String mac, String id) {
+		return repository.findByMacAndId(mac, id);
+	}
+	
+	public Optional<String> findIpByAlias(String alias){
+		return repository.findIpByAlias(alias);
 	}
 
 }

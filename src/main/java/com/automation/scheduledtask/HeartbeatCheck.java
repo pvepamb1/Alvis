@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.automation.domain.DeviceAddress;
 import com.automation.notification.Mailer;
 import com.automation.service.DeviceAddressService;
-import com.automation.table.DeviceAddress;
 
 @Component
 public final class HeartbeatCheck {
