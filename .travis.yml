@@ -1,17 +1,27 @@
 language: java
-before_install: chmod +x gradlew
+sudo: required
+jdk: oraclejdk11
+env:
+  - OS=debian DIST=stretch
+before_install:
+  - chmod +x gradlew
+  - mysql -e 'CREATE DATABASE home_dev;'
 services:
-- mysql
-branches:
-  only:
-    - master
-script: "./gradlew build --info"
+  - mysql
+  - docker
+script:
+  - ./gradlew build --info
+  - git add -f build/libs/*
+  - git submodule update --init --recursive
+  - git clone https://github.com/packpack/packpack.git packpack
+  - packpack/packpack
 deploy:
+  provider: packagecloud
+  username: ${PACKAGECLOUD_USER}
+  repository: ${PACKAGECLOUD_REPO}
+  token: ${PACKAGECLOUD_TOKEN}
+  dist: raspbian/stretch
+  package_glob: build/*.deb
   skip_cleanup: true
-  provider: releases
-  api_key:
-    secure: iS8Hmp07wQxBNBKwAUmy4qIcExmVSjO9wk2CokzepsK9WRgwaF1102F00wnzCgXFUR1x+daoKSGccuHmenkvl+UifBSZYWfphTtGPvu7sNwLMKKdlY2PYVnUaJhD+aB7UrVENsSlnKdq8NSUpkeWc83izMvbPxDtffir9ZeUpyB95eVJi0sS5X0v/orSm3eV32kaFiDmWX8ZE3rFHlw0DVnRTU7/ynYdVaoh2LvG6sKWG4iZgYpsuCsLS1MF87uZq5ApV8yl6uNnEvslVDzPmfMxxjY+DiooE1c2+k1JgZdZxuJU5kAcc35C0mzCHYJ6qLvNo+J+4AdLNTJ/i42vSjdDsklmfqFsTvUOIHX+w4o0apGwvzU+e6M/cSyrOkVpIKZcKPkjJRHJLFEygcvInKwz4uI2HrT0u8mv5TVh9LN8NiT9TIi7WmgAMCc9n05EgAQT0NIp0JX+oPLGZqQxh00JZIf5FPEY70O8GzV2kIOJ3ZDRtm2Xt6B+lbun3YSgbByuvz2NLC5tSc3wKbXu2mc9PUBjmvaW10RRAhwhcA6K3GunzuHb/9cszgVhB5zGZWSW1bMIlFGQae72cBJ7lKLMMcqwA6zmWu62AEDN9dDFjfeffHXJz2fTq63rXaJZ+CAa1qf/mVwLq8nl/lXd3XOZi934LzcoWdR0fzn/uHc=
-  file_glob: true
-  file: "build/libs/*.jar"
   on:
-    repo: pvepamb1/Home-Automation
+    all_branches: true

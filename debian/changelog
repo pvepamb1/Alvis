@@ -1,0 +1,5 @@
+homeauto (0.0.2-1) xenial; urgency=medium
+
+  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+
+ -- Tuttu <homeautomation137@gmail.com>  Fri, 21 Dec 2018 09:14:14 -0500

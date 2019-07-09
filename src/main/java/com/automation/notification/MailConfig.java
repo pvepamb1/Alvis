@@ -11,9 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 import com.automation.controller.UserController;
-import com.automation.enums.SMTP;
+import com.automation.domain.User;
 import com.automation.factory.SimpleSmtpPropsFactory;
-import com.automation.table.User;
 
 @Configuration
 public class MailConfig {
@@ -33,17 +32,11 @@ public class MailConfig {
 		if(user.isPresent()) {
 			jSenderImpl.setUsername(user.get().getEmail());
 			jSenderImpl.setPassword(user.get().getPassword());
-			configProps(SimpleSmtpPropsFactory.getSmtpType(user.get().getEmail()));
+			JavaMailSenderImpl senderConfig = SimpleSmtpPropsFactory.getSmtpPropsByString(user.get().getEmail());
+			jSenderImpl.setHost(senderConfig.getHost());
+			jSenderImpl.setPort(senderConfig.getPort());
+			jSenderImpl.setJavaMailProperties(senderConfig.getJavaMailProperties());
 		}
 		return jSenderImpl;
 	}
-
-	public void configProps(SMTP host) {
-		JavaMailSenderImpl jSenderImpl = ctx.getBean(JavaMailSenderImpl.class);
-		JavaMailSenderImpl senderConfig = SimpleSmtpPropsFactory.getSmtpProps(host);
-		jSenderImpl.setHost(senderConfig.getHost());
-		jSenderImpl.setPort(senderConfig.getPort());
-		jSenderImpl.setJavaMailProperties(senderConfig.getJavaMailProperties());
-	}
-
 }

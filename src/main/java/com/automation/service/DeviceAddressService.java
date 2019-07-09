@@ -5,8 +5,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.automation.domain.DeviceAddress;
 import com.automation.repository.DeviceAddressRepository;
-import com.automation.table.DeviceAddress;
 
 @Service
 public class DeviceAddressService {

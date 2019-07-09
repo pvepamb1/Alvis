@@ -1,0 +1,22 @@
+.home_container{
+    background-image: radial-gradient(white 20%, beige 60%);
+    height: 200px;
+    overflow: hidden;
+}
+
+.title{
+    text-align: center;
+    line-height: 80px;
+    font-size: 4em;
+    font-weight: lighter;
+    color: darkturquoise;
+}
+
+.title span{
+    font-weight: lighter;
+    color: darkseagreen;
+}
+
+.options{
+    text-align: center;
+}

@@ -15,7 +15,7 @@ public class SimpleSmtpPropsFactory {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleSmtpPropsFactory.class);
 
-	public static JavaMailSenderImpl getSmtpProps(SMTP host) {
+	private static JavaMailSenderImpl getSmtpProps(SMTP host) {
 
 		LOGGER.debug("Returning smtp properties for {}", host);
 
@@ -39,11 +39,11 @@ public class SimpleSmtpPropsFactory {
 		return getSmtpProps(getSmtpType(email));
 	}
 
-	public static SMTP getSmtpType(String email) {
+	private static SMTP getSmtpType(String email) {
 
 		LOGGER.debug("Returning the smtp type for {}", email);
 
-		Matcher matcher = Pattern.compile("@(.*?).").matcher(email);
+		Matcher matcher = Pattern.compile("@(.*?)\\.").matcher(email);
 
 		if (matcher.find()) {
 			try {
