@@ -21,8 +21,8 @@ public class HomeAutomationJavaApplication {
 	
 	public static void main(String[] args) {
 		
-		//Terminate program if config dir encounters issues 
-		if(!dirLoader(CONFIG_DIR)) {
+		//Terminate program if loading config dir encounters issues
+		if(!validateConfigDir()) {
 			System.out.print("Config directory error: " + CONFIG_DIR);
 			System.exit(0);
 		}
@@ -35,8 +35,8 @@ public class HomeAutomationJavaApplication {
 	}
 	
 	//create all the necessary dirs if non-existent
-	public static boolean dirLoader(String path) {
-		File folder = new File(path);
+	private static boolean validateConfigDir() {
+		File folder = new File(CONFIG_DIR);
 		if(!folder.exists()) {
 			return folder.mkdirs();
 		}
