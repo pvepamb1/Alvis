@@ -22,8 +22,8 @@ public class SensorDataService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorDataService.class);
 
-	private DeviceAddressService macService;
-	private SensorLookupService lookupService;
+	private final DeviceAddressService macService;
+	private final SensorLookupService lookupService;
 
 	@Autowired
 	public SensorDataService(DeviceAddressService macService, SensorLookupService lookupService) {
@@ -42,6 +42,7 @@ public class SensorDataService {
 		}
 	}
 
+	//Need to handle null pointer exception for that foreach
 	public Iterable<SensorLookup> retrieveUnmapped() {
 		macService.retrieveAll().forEach(
 				x -> new RestTemplate().getForObject("http://" + x.getIp() + "/ids", IDWrapper.class).forEach(y -> {
@@ -64,8 +65,11 @@ public class SensorDataService {
 	}
 
 	public String getSensorPage(@PathVariable String alias) {
-		String ip = lookupService.findIpByAlias(alias).get();
-		return new RestTemplate().getForObject("http://" + ip + "/", String.class);
+		Optional<String> ip = lookupService.findIpByAlias(alias);
+		if(ip.isPresent())
+			return new RestTemplate().getForObject("http://" + ip + "/", String.class);
+		else
+			return "Invalid sensor";
 	}
 
 	public SensorType[] retrieveTypes() {

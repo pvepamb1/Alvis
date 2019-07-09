@@ -18,8 +18,8 @@ public class LDRController implements RestlessController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(LDRController.class);
 
-	LDRService service;
-	LDRNotifier notifier;
+	private final LDRService service;
+	private final LDRNotifier notifier;
 
 	@Autowired
 	public LDRController(LDRService service, LDRNotifier notifier) {

@@ -18,55 +18,43 @@ public class SensorLookupService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SensorLookupService.class);
 
-	private SensorLookupRepository repository;
+	private final SensorLookupRepository repository;
 
 	@Autowired
 	public SensorLookupService(SensorLookupRepository repository) {
 		this.repository = repository;
 	}
 
-	public boolean existsById(SensorLookupID id) {
-		return repository.existsById(id);
-	}
-
-	public boolean existsById(DeviceAddress address, String id) {
-		return this.existsById(new SensorLookupID(address, id));
+	boolean existsById(DeviceAddress address, String id) {
+		return repository.existsById(new SensorLookupID(address, id));
 	}
 
 	public Iterable<SensorLookup> findAll() {
 		return repository.findAll();
 	}
 
-	public void save(SensorLookup lookup) {
+	void save(SensorLookup lookup) {
 		LOGGER.info("Storing sensor info {} type {} and alias {}", lookup.getId(), lookup.getType(), lookup.getAlias());
 		repository.save(lookup);
 	}
 
-	public Iterable<SensorLookup> findByType(SensorType type) {
+	Iterable<SensorLookup> findByType(SensorType type) {
 		return repository.findByType(type);
 	}
 
-	public void saveUnmapped(DeviceAddress address, String id) {
+	void saveUnmapped(DeviceAddress address, String id) {
 		repository.saveUnmapped(address.getMac(), id);
 	}
 
-	public Optional<SensorLookup> findById(SensorLookupID id) {
-		return repository.findById(id);
-	}
-
 	public Optional<SensorLookup> findById(DeviceAddress address, String id) {
-		return this.findById(new SensorLookupID(address, id));
+		return repository.findById(new SensorLookupID(address, id));
 	}
 
-	public Optional<SensorLookup> findByAlias(String alias) {
-		return repository.findByAlias(alias);
-	}
-	
-	public Optional<SensorLookup> findByMacAndId(String mac, String id) {
+	Optional<SensorLookup> findByMacAndId(String mac, String id) {
 		return repository.findByMacAndId(mac, id);
 	}
 	
-	public Optional<String> findIpByAlias(String alias){
+	Optional<String> findIpByAlias(String alias){
 		return repository.findIpByAlias(alias);
 	}
 

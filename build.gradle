@@ -64,7 +64,7 @@ task replaceWords(type: Copy) {
 	
     from "gradle/debian/changelog"
     into "build/tmp/"
-    filter { line -> line.replaceAll('xxx', version) }
+    filter { line -> line.replaceAll('xxx', version as String) }
 }
 
 task ppaScripts(type: Exec) {

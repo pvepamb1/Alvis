@@ -20,10 +20,10 @@ import com.automation.service.SensorLookupService;
 public class LDRNotifier {
 
 	@Value("${mailTo:}")
-	String to;
-	Mailer mailer;
-	SensorConfigBean configBean;
-	SensorLookupService lookupService;
+	private String to;
+	private final Mailer mailer;
+	private final SensorConfigBean configBean;
+	private final SensorLookupService lookupService;
 	private static final Logger LOGGER = LoggerFactory.getLogger(LDRNotifier.class);
 
 	@Autowired
@@ -48,14 +48,14 @@ public class LDRNotifier {
 			}
 
 			else if (Integer.parseInt(ldr.getValue()) < Integer.parseInt(prop.getProperty("min"))) {
-				LOGGER.info("{} value below {}. reseting mail state to false", identifier, prop.getProperty("min"));
+				LOGGER.info("{} value below {}. resetting mail state to false", identifier, prop.getProperty("min"));
 				writeToFile(identifier, prop, "false");
 			}
 		}
 	}
 
 	private void writeToFile(String identifier, Properties prop, String value) {
-		OutputStream output = null;
+		OutputStream output;
 
 		try {
 
@@ -70,7 +70,7 @@ public class LDRNotifier {
 	}
 	
 	public void createConfigFile(SensorLookup sensor) {
-		OutputStream output = null;
+		OutputStream output;
 		Properties prop = new Properties();
 		String identifier = sensor.getAlias();
 

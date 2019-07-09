@@ -24,7 +24,7 @@ import com.automation.service.SensorLookupService;
 @Component
 public class SensorConfigBean {
 
-	SensorLookupService lookupService;
+	private final SensorLookupService lookupService;
 
 	private ConcurrentHashMap<String, Properties> allProperties;
 
@@ -39,7 +39,7 @@ public class SensorConfigBean {
 		loadConfig();
 	}
 
-	public void loadConfig() {
+	private void loadConfig() {
 		lookupService.findAll().forEach(x -> {
 			String name = x.getAlias();
 			Properties props = new Properties();
