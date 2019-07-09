@@ -1,5 +1,6 @@
 language: java
 sudo: required
+jdk: oraclejdk11
 env:
   - OS=debian DIST=stretch
 before_install:
