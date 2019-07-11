@@ -24,4 +24,4 @@ deploy:
   package_glob: build/*.deb
   skip_cleanup: true
   on:
-    all_branches: true
+    branch: master

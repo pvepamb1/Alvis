@@ -20,10 +20,10 @@ public final class HeartbeatCheck {
 	private static final Logger LOGGER = LoggerFactory.getLogger(HeartbeatCheck.class);
 	private static final long checkDelay = 60; // in minutes
 	private static final long fixedDelayValue = 60; //in minutes
-	private DeviceAddressService service;
-	private Mailer mailer;
+	private final DeviceAddressService service;
+	private final Mailer mailer;
 	@Value("${mailTo:}")
-	String to;
+	private String to;
 
 	@Autowired
 	public HeartbeatCheck(DeviceAddressService service, Mailer mailer) {

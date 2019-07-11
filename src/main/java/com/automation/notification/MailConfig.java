@@ -20,8 +20,10 @@ public class MailConfig {
 	@Autowired
 	ApplicationContext ctx;
 	@Autowired
+	private
 	UserController userController;
 	@Value("${dbuser:}")
+	private
 	String username;
 
 	@Bean

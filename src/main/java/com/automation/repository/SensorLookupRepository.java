@@ -20,20 +20,12 @@ public interface SensorLookupRepository extends CrudRepository<SensorLookup, Sen
 	
 	/**
      * Finds sensor by using the type as a search criteria.
-     * @param type
+     * @param type A SensorType describing the type of sensor
      * @return  A list of sensors whose type is an exact match with the given type.
      *          If no sensors are found, this method returns null.
      */
 	Iterable<SensorLookup> findByType(SensorType type);
-	
-	/**
-     * Finds sensor by using the alias as a search criteria.
-     * @param alias
-     * @return  A list of sensors whose alias is an exact match with the given alias.
-     *          If no sensors are found, this method returns null.
-     */
-	Optional<SensorLookup> findByAlias(String alias);
-	
+
 	@Query(value = "SELECT * FROM sensor_lookup sensor WHERE sensor.address_mac= ?1 and sensor.id= ?2",
 			nativeQuery = true)
 	Optional<SensorLookup> findByMacAndId(String mac, String id);

@@ -19,7 +19,7 @@ import com.automation.service.UserService;
 @RequestMapping("/api/users")
 public class UserController {
 
-	private UserService service;
+	private final UserService service;
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
 

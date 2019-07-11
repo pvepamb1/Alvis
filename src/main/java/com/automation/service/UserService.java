@@ -24,10 +24,10 @@ public class UserService {
 	private UserRepository repository;
 
 	@Autowired
-	ApplicationContext ctx;
+	private ApplicationContext ctx;
 
 	@Value("${dbuser:}")
-	String username;
+	private String username;
 
 	public void storeOrUpdate(User user) {
 		user.setName(user.getName().trim().toLowerCase(Locale.ENGLISH));
@@ -49,7 +49,7 @@ public class UserService {
 		repository.deleteById(name);
 	}
 
-	public void updateEmail(User user) {
+	private void updateEmail(User user) {
 		JavaMailSenderImpl jSenderImpl = ctx.getBean(JavaMailSenderImpl.class);
 		if (user.getName().equals(username.trim().toLowerCase(Locale.ENGLISH))) {
 			jSenderImpl.setUsername(user.getEmail());

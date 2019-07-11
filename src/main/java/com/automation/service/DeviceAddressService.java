@@ -1,12 +1,9 @@
 package com.automation.service;
 
-import java.util.Optional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.automation.domain.DeviceAddress;
 import com.automation.repository.DeviceAddressRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class DeviceAddressService {
@@ -14,12 +11,8 @@ public class DeviceAddressService {
 	@Autowired
 	private DeviceAddressRepository macRepository;
 	
-	public void store(DeviceAddress mtip) {
-		macRepository.save(mtip);
-	}
-	
-	public Optional<DeviceAddress> retrieve(String macAddress) {
-		return macRepository.findById(macAddress);
+	public void store(DeviceAddress address) {
+		macRepository.save(address);
 	}
 	
 	public Iterable<DeviceAddress> retrieveAll(){

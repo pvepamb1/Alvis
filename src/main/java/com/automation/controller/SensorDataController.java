@@ -24,7 +24,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 @RequestMapping("/api/sensors")
 public class SensorDataController {
 
-	private SensorDataService service;
+	private final SensorDataService service;
 
 	@Autowired
 	public SensorDataController(SensorDataService service) {
