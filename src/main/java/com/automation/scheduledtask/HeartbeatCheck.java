@@ -1,8 +1,8 @@
 package com.automation.scheduledtask;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
+import com.automation.domain.DeviceAddress;
+import com.automation.notification.Mailer;
+import com.automation.service.DeviceAddressService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,15 +10,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.automation.domain.DeviceAddress;
-import com.automation.notification.Mailer;
-import com.automation.service.DeviceAddressService;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Component
 public final class HeartbeatCheck {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(HeartbeatCheck.class);
-	private static final long checkDelay = 60; // in minutes
+	private static long checkDelay = 60; // in minutes
 	private static final long fixedDelayValue = 60; //in minutes
 	private final DeviceAddressService service;
 	private final Mailer mailer;
@@ -43,4 +42,11 @@ public final class HeartbeatCheck {
 		}
 	}
 
+	public static long getCheckDelay() {
+		return checkDelay;
+	}
+
+	public static void setCheckDelay(long checkDelay) {
+		HeartbeatCheck.checkDelay = checkDelay;
+	}
 }
