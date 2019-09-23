@@ -5,8 +5,7 @@ import './Register.css';
 class Register extends React.Component {
 
     constructor(props){
-        super();
-        this.url = props.url;
+        super(props);
         this.state = {sensors:<tr></tr>, final:[]};
         this.handleRefresh = this.handleRefresh.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
@@ -16,8 +15,8 @@ class Register extends React.Component {
 
     async handleRefresh(event){
         event.preventDefault();
-        let sensorData = await axios.get(this.url + "sensors/unmapped");
-        let types = await axios.get(this.url + "/sensors/types");
+        let sensorData = await axios.get("api/sensors/unmapped");
+        let types = await axios.get("api/sensors/types");
         let options = types.data.map((obj,index) =>(<option value={obj} key={index}>{obj}</option>));
         let sensorValues = [];
         for(let val of sensorData.data){
@@ -51,7 +50,7 @@ class Register extends React.Component {
     }
 
     async submitValues(){
-           await axios.put(this.url + '/sensors/', this.state.final);
+           await axios.put('api/sensors', this.state.final);
            this.setState({sensors:<tr></tr>});
     }
 

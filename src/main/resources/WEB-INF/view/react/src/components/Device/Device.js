@@ -4,21 +4,20 @@ import axios from 'axios';
 class Device extends React.Component {
 
     constructor(props) {
-        super();
-        this.url = props.url;
-        this.state = {sensors: <tr></tr>, res:''};
+        super(props);
+        this.state = {sensors: <tr></tr>};
         this.handleRefresh = this.handleRefresh.bind(this);
     }
 
     async handleRefresh(event){
         event.preventDefault();
-        let sensorData = await axios.get(this.url + "/sensors/");
+        let sensorData = await axios.get("api/sensors");
         let sensorValues = [];
         for(let val of sensorData.data){
             sensorValues.push(
                 <tr key={val}>
                     <td>
-                        <a href={`${this.url}/sensors/${val.alias}`} className="button">{val.alias}</a>
+                        <a href={`api/sensors/${val.alias}`} className="button">{val.alias}</a>
                     </td>
                 </tr>)
         }

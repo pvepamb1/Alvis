@@ -6,7 +6,6 @@ class User extends React.Component{
 
     constructor(props) {
         super(props);
-        this.url = props.url;
         this.state = {name:'', email:'', password:'', success:''};
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -14,7 +13,7 @@ class User extends React.Component{
 
     async handleSubmit(event){
         event.preventDefault();
-        await axios.post(this.url + "/save", this.state);
+        await axios.post("api/users", this.state);
         this.setState({name:'', email:'', password:'', success:'Successfully submitted'});
     }
 
