@@ -1,0 +1,7 @@
+apply from: "../../common.gradle"
+
+dependencies {
+    compile project(":components:user")
+    compile project(":components:enums")
+    compile('org.springframework.boot:spring-boot-starter-mail')
+}

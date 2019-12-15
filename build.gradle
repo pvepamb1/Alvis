@@ -7,9 +7,9 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("io.spring.gradle:dependency-management-plugin:1.0.5.RELEASE")
 	}
 }
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
@@ -23,29 +23,13 @@ def getVersionName = { ->
 	}
 	return stdout.toString().trim()
 }
-
-group = 'com.automation'
-version = getVersionName()
-sourceCompatibility = 1.11
-
-bootJar {
-	launchScript()
-}
-
 repositories {
 	mavenCentral()
 }
 
-dependencies {
-	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.boot:spring-boot-starter-mail')
-	compile("org.springframework.boot:spring-boot-starter-security")
-	compile('javax.xml.bind:jaxb-api')
-	runtime('mysql:mysql-connector-java')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
-	compileOnly "org.projectlombok:lombok:1.18.8"
-	annotationProcessor "org.projectlombok:lombok:1.18.8"
+bootJar {
+	mainClassName = 'com.automation.butler.ButlerMicroservice'
+	//launchScript()
 }
+
 

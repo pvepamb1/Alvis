@@ -1,0 +1,6 @@
+apply from:"../../common.gradle"
+
+dependencies {
+    compile project(":components:enums")
+    compile project(":components:deviceaddress")
+}
