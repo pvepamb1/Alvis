@@ -1,0 +1,5 @@
+dependencies {
+    compile project(":components:sensor")
+    //compile project(":components:sensorlookup")
+    compile project(":components:notification")
+}

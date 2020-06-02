@@ -209,7 +209,7 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
       <varlistentry>
         <term><filename>${HOME}/.foo.conf</filename></term>
         <listitem>
-          <para>The per-user configuration file to control the
+          <para>The per-userDTO configuration file to control the
              behaviour of <application>&dhpackage;</application>. See
              <citerefentry>
                <refentrytitle>foo.conf</refentrytitle>
