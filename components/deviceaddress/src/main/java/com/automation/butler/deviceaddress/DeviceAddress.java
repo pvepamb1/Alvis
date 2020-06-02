@@ -1,17 +1,16 @@
 package com.automation.butler.deviceaddress;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -21,22 +20,14 @@ import lombok.NoArgsConstructor;
 public class DeviceAddress {
 
 	@Id
+	@NotNull
 	@Column(length = 17)
 	private String mac;
 
 	@Column(length = 15)
+	@NotNull
 	private String ip;
 
 	@UpdateTimestamp
 	private LocalDateTime updateDateTime;
-
-	/*public DeviceAddress(String mac) {
-		this.mac = mac;
-	}
-
-	public DeviceAddress(String mac, String ip) {
-		this.mac = mac;
-		this.ip = ip;
-	}
-*/
 }

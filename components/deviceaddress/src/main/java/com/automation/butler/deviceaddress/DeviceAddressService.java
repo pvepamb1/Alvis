@@ -8,8 +8,8 @@ public class DeviceAddressService {
 
 	@Autowired
 	private DeviceAddressRepository macRepository;
-	
-	public void store(DeviceAddress address) {
+
+    void store(DeviceAddress address) {
 		macRepository.save(address);
 	}
 	

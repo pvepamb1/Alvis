@@ -6,16 +6,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SimpleControllerFactory {
-
-	private static ApplicationContext ctx;
+class SimpleControllerFactory {
 
 	@Autowired
-	public SimpleControllerFactory(ApplicationContext applicationContext) {
-		SimpleControllerFactory.ctx = applicationContext;
-	}
+    private static ApplicationContext ctx;
 
-	public static RestlessController getController(SensorType type) {
+    private SimpleControllerFactory() {
+    }
+
+    static RestlessController getController(SensorType type) {
 		return (RestlessController) ctx.getBean(type + "Controller");
 	}
 }

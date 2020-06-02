@@ -1,17 +1,17 @@
 package com.automation.butler;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ReactHomeController {
 
-    @RequestMapping(value = "/")
+    @GetMapping(value = "/")
     public String rootToIndex() {
         return "forward:/index.html";
     }
 
-    @RequestMapping(value = "/{path:[^\\.]*}")
+    @GetMapping(value = "/{path:[^\\.]*}")
     public String reactRouting() {
         return "forward:/";
     }

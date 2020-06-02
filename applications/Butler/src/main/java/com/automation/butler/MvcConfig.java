@@ -7,18 +7,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
+    private static final String UI_DIR = "classpath:/WEB-INF/view/react/build/";
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
         registry.addResourceHandler("/static/**")
-                .addResourceLocations("classpath:/WEB-INF/view/react/build/static/");
+                .addResourceLocations(UI_DIR + "static/");
         registry.addResourceHandler("/*.js")
-                .addResourceLocations("classpath:/WEB-INF/view/react/build/");
+                .addResourceLocations(UI_DIR);
         registry.addResourceHandler("/*.json")
-                .addResourceLocations("classpath:/WEB-INF/view/react/build/");
+                .addResourceLocations(UI_DIR);
         registry.addResourceHandler("/*.ico")
-                .addResourceLocations("classpath:/WEB-INF/view/react/build/");
+                .addResourceLocations(UI_DIR);
         registry.addResourceHandler("/index.html")
-                .addResourceLocations("classpath:/WEB-INF/view/react/build/index.html");
+                .addResourceLocations(UI_DIR + "index.html");
     }
 }

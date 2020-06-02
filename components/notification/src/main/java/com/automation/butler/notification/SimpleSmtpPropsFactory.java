@@ -1,20 +1,20 @@
 package com.automation.butler.notification;
 
+import com.automation.butler.enums.SMTP;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.automation.butler.enums.SMTP;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
+@Slf4j
+class SimpleSmtpPropsFactory {
 
-public class SimpleSmtpPropsFactory {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(SimpleSmtpPropsFactory.class);
+	private SimpleSmtpPropsFactory() {
+	}
 
 	private static JavaMailSenderImpl getSmtpProps(SMTP host) {
-
-		LOGGER.debug("Returning smtp properties for {}", host);
+		log.debug("Returning smtp properties for {}", host);
 
 		if (host != null) {
 			switch (host) {
@@ -27,29 +27,24 @@ public class SimpleSmtpPropsFactory {
 			}
 		}
 
-		LOGGER.warn("Unidentified SMTP type");
-
+		log.debug("Unidentified SMTP type");
 		return null;
 	}
 
-	public static JavaMailSenderImpl getSmtpPropsByString(String email) {
+	static JavaMailSenderImpl getSmtpPropsByString(String email) {
 		return getSmtpProps(getSmtpType(email));
 	}
 
 	private static SMTP getSmtpType(String email) {
-
-		LOGGER.debug("Returning the smtp type for {}", email);
-
+		log.debug("Returning the smtp type for {}", email);
 		Matcher matcher = Pattern.compile("@(.*?)\\.").matcher(email);
-
 		if (matcher.find()) {
 			try {
 				return SMTP.valueOf(matcher.group(1).toUpperCase());
 			} catch (Exception e) {
-				LOGGER.warn("{} for {}", e.getMessage(), email);
+				log.debug("{} for {}", e.getMessage(), email);
 			}
 		}
-
 		return null;
 	}
 }

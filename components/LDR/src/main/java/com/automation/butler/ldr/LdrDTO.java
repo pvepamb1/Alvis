@@ -1,21 +1,14 @@
 package com.automation.butler.ldr;
 
-import java.time.LocalDateTime;
-
-import javax.persistence.AttributeOverride;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
 import com.automation.butler.sensor.Sensor;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -23,7 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @AttributeOverride(name = "value", column = @Column(length = 4))
-public class LDRDTO extends Sensor {
+class LdrDTO extends Sensor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

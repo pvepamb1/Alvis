@@ -1,18 +1,17 @@
 package com.automation.butler.sensor;
 
+import com.automation.butler.sensorlookup.SensorLookupService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.automation.butler.sensorlookup.SensorLookupService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.concurrent.ConcurrentMap;
 
 /**
  * This class is responsible for loading all configurations for all sensors
@@ -20,16 +19,14 @@ import org.springframework.stereotype.Component;
  * registered device 
  */
 
+@Slf4j
 @Component
 public class SensorConfigBean {
 
 	private final SensorLookupService lookupService;
 
-	private ConcurrentHashMap<String, Properties> allProperties;
-
-	private static final String configDir = System.getenv("HOME") + "/.homeauto/config/";
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(SensorConfigBean.class);
+	private static final String CONFIG_DIR = System.getenv("HOME") + "/.homeauto/config/";
+	private ConcurrentMap<String, Properties> allProperties;
 	
 	@Autowired
 	public SensorConfigBean(SensorLookupService lookupService) {
@@ -43,26 +40,26 @@ public class SensorConfigBean {
 			String name = x.getAlias();
 			Properties props = new Properties();
 			try {
-				if(new File(configDir).exists()) {
-					props.load(	new FileInputStream(configDir + name + ".properties"));
-					LOGGER.info("Loaded configuration for {}", name);
+				if (new File(CONFIG_DIR).exists()) {
+					props.load(new FileInputStream(CONFIG_DIR + name + ".properties"));
+					log.info("Loaded configuration for {}", name);
 					allProperties.put(name, props);
 				}else {
-					new File(configDir).mkdirs();
+					new File(CONFIG_DIR).mkdirs();
 				}
 			} catch (FileNotFoundException e) {
-				LOGGER.warn("File not found {}{}.properties", configDir,name );
+				log.debug("File not found {}{}.properties", CONFIG_DIR, name);
 			} catch (IOException e) {
-				LOGGER.warn("IO Exception {}", e.getMessage());
+				log.debug("IO Exception {}", e.getMessage());
 			}
 		});
 	}
 
-	public Map<String, Properties> getAllProperties() {
+	public ConcurrentMap<String, Properties> getAllProperties() {
 		return this.allProperties;
 	}
 
-	public void setAllProperties(ConcurrentHashMap<String, Properties> allProperties) {
+	public void setAllProperties(ConcurrentMap<String, Properties> allProperties) {
 		this.allProperties = allProperties;
 	}
 	

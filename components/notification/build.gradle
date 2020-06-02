@@ -1,5 +1,3 @@
-apply from: "../../common.gradle"
-
 dependencies {
     compile project(":components:user")
     compile project(":components:enums")

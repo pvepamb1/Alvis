@@ -7,6 +7,6 @@ import org.springframework.data.repository.CrudRepository;
  * which is stored in the database.
  */
 
-public interface DeviceAddressRepository extends CrudRepository<DeviceAddress, String> {
+interface DeviceAddressRepository extends CrudRepository<DeviceAddress, String> {
 
 }

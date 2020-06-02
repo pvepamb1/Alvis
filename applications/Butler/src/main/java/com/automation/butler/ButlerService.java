@@ -1,10 +1,11 @@
 package com.automation.butler;
 
-import java.io.File;
-
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.scheduling.annotation.EnableScheduling;
+
+import java.io.File;
 
 /**
  * This program is an attempt to provide maximum flexibility when it
@@ -13,9 +14,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * sensors that can relay data to a raspberry-pi or a similar server. 
  */
 
+@Slf4j
 @EnableScheduling
 @SpringBootApplication
-public class ButlerMicroservice {
+public class ButlerService {
 
 	private static final String CONFIG_DIR = System.getenv("HOME") + "/.homeauto/config/";
 	
@@ -23,12 +25,12 @@ public class ButlerMicroservice {
 		
 		//Terminate program if loading config dir encounters issues
 		if(!validateConfigDir()) {
-			System.out.print("Config directory error: " + CONFIG_DIR);
+            log.error("Config directory error: {}", CONFIG_DIR);
 			System.exit(0);
 		}
 		
 		//load application and db props from servlet root and $HOME
-		new SpringApplicationBuilder(ButlerMicroservice.class)
+        new SpringApplicationBuilder(ButlerService.class)
 				.properties("spring.config.name:application,db", "spring.config.location:classpath:/," + CONFIG_DIR)
 				.build()
 				.run(args);

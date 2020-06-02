@@ -1,5 +1,3 @@
-apply from: "../../common.gradle"
-
 dependencies {
     compile project(":components:sensorlookup")
     compile project(":components:deviceaddress")
