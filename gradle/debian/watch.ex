@@ -21,7 +21,7 @@ version=4
 
 # GitHub hosted projects
 #opts="filenamemangle=s%(?:.*?)?v?(\d[\d.]*)\.tar\.gz%<project>-$1.tar.gz%" \
-#   https://github.com/<user>/homeauto/tags \
+#   https://github.com/<userDTO>/homeauto/tags \
 #   (?:.*?/)?v?(\d[\d.]*)\.tar\.gz debian uupdate
 
 # PyPI
