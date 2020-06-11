@@ -1,5 +1,6 @@
 dependencies {
-    compile project(":components:deviceaddress")
-    compile project(":components:scheduled")
-    compile("org.springframework.boot:spring-boot-starter-security")
+    implementation project(':components:deviceaddress')
+    compile project(':components:scheduled')
+    compile project(':components:sensor-router')
+    //compile("org.springframework.boot:spring-boot-starter-security")
 }

@@ -1,8 +1,11 @@
 package com.automation.butler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.File;
@@ -17,7 +20,9 @@ import java.io.File;
 @Slf4j
 @EnableScheduling
 @SpringBootApplication
-public class ButlerService {
+public class ButlerService implements CommandLineRunner {
+	@Autowired
+	private ApplicationContext context;
 
 	private static final String CONFIG_DIR = System.getenv("HOME") + "/.homeauto/config/";
 	
@@ -43,5 +48,10 @@ public class ButlerService {
 			return folder.mkdirs();
 		}
 		return true;
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		context.getBean("DeviceAddressController");
 	}
 }

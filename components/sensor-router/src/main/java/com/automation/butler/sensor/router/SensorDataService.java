@@ -1,10 +1,10 @@
-package com.automation.butler.sensor;
+package com.automation.butler.sensor.router;
 
+import com.automation.butler.deviceaddress.DeviceAddress;
 import com.automation.butler.deviceaddress.DeviceAddressService;
 import com.automation.butler.enums.SensorType;
 import com.automation.butler.sensorlookup.SensorLookup;
 import com.automation.butler.sensorlookup.SensorLookupService;
-import com.automation.butler.util.IDWrapper;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,13 +40,25 @@ public class SensorDataService {
 
 	//Need to handle null pointer exception for that foreach
 	Iterable<SensorLookup> retrieveUnmapped() {
-		macService.retrieveAll().forEach(
+		/*macService.retrieveAll().forEach(
 				x -> new RestTemplate().getForObject("http://" + x.getIp() + "/ids", IDWrapper.class).forEach(y -> {
 					if (!lookupService.existsById(x, y)) {
 						lookupService.saveUnmapped(x, y);
 					}
-				}));
+				}));*/
 		return lookupService.findByType(null);
+	}
+
+	void createUnmappedIfIdNonExistent(DeviceAddress address, List<String> ids) {
+		for (String id : ids) {
+			if (!lookupService.existsById(address, id)) {
+				lookupService.saveUnmapped(address, id);
+			}
+		}
+	}
+
+	List<Optional<SensorLookup>> getSensorLookups(String mac) {
+		return lookupService.findByMac(mac);
 	}
 
 	void updateLookup(@RequestBody List<SensorLookup> body) {

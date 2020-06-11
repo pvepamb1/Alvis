@@ -1,6 +1,7 @@
-package com.automation.butler.sensor;
+package com.automation.butler.sensor.router;
 
 import com.automation.butler.enums.SensorType;
+import com.automation.butler.sensor.RestlessController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -8,10 +9,11 @@ import org.springframework.stereotype.Component;
 @Component
 class SimpleControllerFactory {
 
-	@Autowired
     private static ApplicationContext ctx;
 
-    private SimpleControllerFactory() {
+    @Autowired
+    public SimpleControllerFactory(ApplicationContext applicationContext) {
+        SimpleControllerFactory.ctx = applicationContext;
     }
 
     static RestlessController getController(SensorType type) {

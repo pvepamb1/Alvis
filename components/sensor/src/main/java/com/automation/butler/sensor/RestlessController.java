@@ -7,4 +7,8 @@ public interface RestlessController {
 
 	void updateData(JsonNode body);
 	void createConfigFile(SensorLookup sensor);
+
+	JsonNode getConfigByAlias(String alias);
+
+	void createDefaultConfig(String alias);
 }

@@ -11,13 +11,13 @@ import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
-public class LdrController implements RestlessController {
+public class LDRController implements RestlessController {
 
     private final LdrService service;
     private final LdrNotifier notifier;
 
     @Autowired
-    public LdrController(LdrService service, LdrNotifier notifier) {
+    public LDRController(LdrService service, LdrNotifier notifier) {
         this.service = service;
         this.notifier = notifier;
     }
@@ -32,6 +32,16 @@ public class LdrController implements RestlessController {
             log.debug("Ignored {}", body);
             log.debug(e.getMessage());
         }
+    }
+
+    @Override
+    public JsonNode getConfigByAlias(String alias) {
+        return new ObjectMapper().valueToTree(service.getConfigByAlias(alias));
+    }
+
+    @Override
+    public void createDefaultConfig(String alias) {
+        service.createDefaultConfig(alias);
     }
 
     @Override
