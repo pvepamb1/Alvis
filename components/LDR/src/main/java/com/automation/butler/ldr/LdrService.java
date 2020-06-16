@@ -1,39 +1,18 @@
 package com.automation.butler.ldr;
 
-import lombok.extern.slf4j.Slf4j;
+import com.automation.butler.enums.SensorType;
+import com.automation.butler.sensor.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import static com.automation.butler.enums.SensorType.LDR;
 
-@Slf4j
 @Service
-public class LdrService {
-
-    private final LdrRepository ldrRepository;
-
-    private final LdrConfigRepository ldrConfigRepository;
+public class LdrService extends SensorService<LdrRepository, LdrDTO, SensorType> {
 
     @Autowired
-    public LdrService(LdrRepository ldrRepository, LdrConfigRepository ldrConfigRepository) {
-        this.ldrRepository = ldrRepository;
-        this.ldrConfigRepository = ldrConfigRepository;
+    public LdrService(@Autowired LdrRepository repo, @Autowired ApplicationEventPublisher eventPublisher) {
+        super(repo, LdrDTO.class, LDR, eventPublisher);
     }
-
-    void store(LdrDTO value) {
-        log.info("Storing {}", value);
-        ldrRepository.save(value);
-    }
-
-    LdrConfig getConfigByAlias(String alias) {
-        Optional<LdrConfig> ldrConfig = ldrConfigRepository.findById(alias);
-        return ldrConfig.orElse(null);
-    }
-
-    void createDefaultConfig(String alias) {
-        LdrConfig ldrConfig = new LdrConfig();
-        ldrConfig.setAlias(alias);
-        ldrConfigRepository.save(ldrConfig);
-    }
-
 }

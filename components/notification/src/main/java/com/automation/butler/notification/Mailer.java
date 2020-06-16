@@ -22,7 +22,10 @@ public class Mailer{
     @Value("${dbuser:}")
     private String username;
 
-    public void sendSimpleMessage(String to, String subject, String text) {
+    @Value("${mailTo:}")
+    private String to;
+
+    void sendSimpleMessage(String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject(subject);
         message.setText(text);
@@ -35,7 +38,7 @@ public class Mailer{
         JavaMailSenderImpl jSenderImpl = new JavaMailSenderImpl();
         Optional<UserDTO> user = userController.getUserCreds(username);
         if (user.isPresent()) {
-            log.info("Found {}", user.get().getEmail());
+            log.info("Mailing {}", user.get().getEmail());
             jSenderImpl.setUsername(user.get().getEmail());
             jSenderImpl.setPassword(user.get().getPassword());
             JavaMailSenderImpl senderConfig = SimpleSmtpPropsFactory.getSmtpPropsByString(user.get().getEmail());

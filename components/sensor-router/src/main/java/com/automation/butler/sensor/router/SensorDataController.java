@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.automation.butler.sensor.router.SensorDataRouter.getConfigService;
+
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/sensors")
@@ -49,7 +51,7 @@ public class SensorDataController {
 			if (sensorLookup.isPresent()) {
 				SensorType type = sensorLookup.get().getType();
 				if (type != null) {
-					configList.add(SimpleControllerFactory.getController(type).getConfigByAlias(sensorLookup.get().getAlias()));
+					configList.add(getConfigService(type).getConfigAsJsonById(sensorLookup.get().getId()));
 				}
 			}
 		}
@@ -73,7 +75,7 @@ public class SensorDataController {
 		service.updateLookup(body);
 		//create default configs
 		for (SensorLookup sensorLookup : body) {
-			SimpleControllerFactory.getController(sensorLookup.getType()).createDefaultConfig(sensorLookup.getAlias());
+			getConfigService(sensorLookup.getType()).createDefaultConfig(sensorLookup.getId());
 		}
 		synchronized (this) {
 			notifyAll();
@@ -97,5 +99,4 @@ public class SensorDataController {
 	public SensorType[] retrieveTypes() {
 		return service.retrieveTypes();
 	}
-
 }

@@ -15,7 +15,7 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-class SensorLookupID implements Serializable {
+public class SensorLookupID implements Serializable {
 
 	private static final long serialVersionUID = -7769334084663720925L;
 

@@ -1,7 +1,6 @@
 package com.automation.butler.sensor.router;
 
 import com.automation.butler.deviceaddress.DeviceAddress;
-import com.automation.butler.deviceaddress.DeviceAddressService;
 import com.automation.butler.enums.SensorType;
 import com.automation.butler.sensorlookup.SensorLookup;
 import com.automation.butler.sensorlookup.SensorLookupService;
@@ -18,13 +17,11 @@ import java.util.Optional;
 @Service
 public class SensorDataService {
 
-	private final DeviceAddressService macService;
 	private final SensorLookupService lookupService;
 
 	@Autowired
-	public SensorDataService(DeviceAddressService macService, SensorLookupService lookupService) {
+	public SensorDataService(SensorLookupService lookupService) {
 		this.lookupService = lookupService;
-		this.macService = macService;
 	}
 
 	void updateData(JsonNode body) {
@@ -33,19 +30,12 @@ public class SensorDataService {
 		if (sensor.isPresent()) {
 			SensorType type = sensor.get().getType();
 			if (type != null) {
-				SimpleControllerFactory.getController(type).updateData(body);
+				SensorDataRouter.getService(type).save(body);
 			}
 		}
 	}
 
-	//Need to handle null pointer exception for that foreach
 	Iterable<SensorLookup> retrieveUnmapped() {
-		/*macService.retrieveAll().forEach(
-				x -> new RestTemplate().getForObject("http://" + x.getIp() + "/ids", IDWrapper.class).forEach(y -> {
-					if (!lookupService.existsById(x, y)) {
-						lookupService.saveUnmapped(x, y);
-					}
-				}));*/
 		return lookupService.findByType(null);
 	}
 
@@ -64,7 +54,6 @@ public class SensorDataService {
 	void updateLookup(@RequestBody List<SensorLookup> body) {
 		for (SensorLookup sensorData : body) {
 			lookupService.save(sensorData);
-			SimpleControllerFactory.getController(sensorData.getType()).createConfigFile(sensorData);
 		}
 	}
 
@@ -83,5 +72,4 @@ public class SensorDataService {
 	SensorType[] retrieveTypes() {
 		return SensorType.values();
 	}
-
 }

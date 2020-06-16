@@ -1,3 +1,4 @@
 dependencies {
     compile project(":components:sensorlookup")
+    compile project(":components:notification")
 }

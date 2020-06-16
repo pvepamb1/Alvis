@@ -2,6 +2,5 @@ dependencies {
     implementation project(':components:sensor')
     compile project(":components:deviceaddress")
     compile project(":components:enums")
-    compile project(":components:util")
     compile project(":components:ldr")
 }

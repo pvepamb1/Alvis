@@ -1,8 +1,8 @@
 package com.automation.butler.notification;
 
-import java.util.Properties;
-
 import org.springframework.mail.javamail.JavaMailSenderImpl;
+
+import java.util.Properties;
 
 public class YahooSender extends JavaMailSenderImpl {
 
@@ -23,7 +23,7 @@ public class YahooSender extends JavaMailSenderImpl {
 
 		properties.setProperty("mail.smtp.auth", "true");
 		properties.setProperty("mail.smtp.starttls.enable", "true");
-		properties.setProperty("mail.smtp.ssl.trust", "smtp.gmail.com");
+        properties.setProperty("mail.smtp.ssl.trust", "smtp.yahoo.com");
 
 		return properties;
 	}

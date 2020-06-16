@@ -25,9 +25,12 @@ public class DeviceAddress {
 	private String mac;
 
 	@Column(length = 15)
-	@NotNull
 	private String ip;
 
 	@UpdateTimestamp
 	private LocalDateTime updateDateTime;
+
+    public DeviceAddress(@NotNull String mac) {
+        this.mac = mac;
+    }
 }
