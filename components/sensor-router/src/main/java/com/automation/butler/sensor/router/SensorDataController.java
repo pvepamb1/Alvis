@@ -5,6 +5,7 @@ import com.automation.butler.deviceaddress.DeviceAddressService;
 import com.automation.butler.enums.SensorType;
 import com.automation.butler.sensorlookup.SensorLookup;
 import com.fasterxml.jackson.databind.JsonNode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static com.automation.butler.sensor.router.SensorDataRouter.getConfigService;
 
+@Slf4j
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/sensors")
@@ -35,14 +37,16 @@ public class SensorDataController {
 		List<JsonNode> configList = new ArrayList<>();
 		DeviceAddress address = new DeviceAddress(configRequest.getMac(), configRequest.getIp(), null);
 		addressService.store(address);
-		service.createUnmappedIfIdNonExistent(address, configRequest.getIds());
-		//wait for updatelookup to finish
-		try {
-			synchronized (this) {
-				wait();
-			}
-		} catch (InterruptedException ex) {
+		int count = service.createUnmappedIfIdNonExistent(address, configRequest.getIds());
+		if (count != 0) {
+			//wait for updatelookup to finish
+			try {
+				synchronized (this) {
+					wait();
+				}
+			} catch (InterruptedException ex) {
 
+			}
 		}
 		//get sensorlookup
 		List<Optional<SensorLookup>> optionals = service.getSensorLookups(configRequest.getMac());

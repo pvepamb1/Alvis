@@ -39,12 +39,15 @@ public class SensorDataService {
 		return lookupService.findByType(null);
 	}
 
-	void createUnmappedIfIdNonExistent(DeviceAddress address, List<String> ids) {
+	int createUnmappedIfIdNonExistent(DeviceAddress address, List<String> ids) {
+		int count = 0;
 		for (String id : ids) {
 			if (!lookupService.existsById(address, id)) {
 				lookupService.saveUnmapped(address, id);
+				count++;
 			}
 		}
+		return count;
 	}
 
 	List<Optional<SensorLookup>> getSensorLookups(String mac) {
