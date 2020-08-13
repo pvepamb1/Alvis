@@ -39,19 +39,20 @@ public class SensorDataService {
 		return lookupService.findByType(null);
 	}
 
-	int createUnmappedIfIdNonExistent(DeviceAddress address, List<String> ids) {
-		int count = 0;
+	void createUnmappedIfIdNonExistent(DeviceAddress address, List<String> ids) {
 		for (String id : ids) {
 			if (!lookupService.existsById(address, id)) {
 				lookupService.saveUnmapped(address, id);
-				count++;
 			}
 		}
-		return count;
 	}
 
-	List<Optional<SensorLookup>> getSensorLookups(String mac) {
+	List<Optional<SensorLookup>> getSensorLookupsByMac(String mac) {
 		return lookupService.findByMac(mac);
+	}
+
+	Optional<SensorLookup> getSensorLookupByAlias(String alias) {
+		return lookupService.findByAlias(alias);
 	}
 
 	void updateLookup(@RequestBody List<SensorLookup> body) {
@@ -65,9 +66,9 @@ public class SensorDataService {
 	}
 
 	String getSensorPage(@PathVariable String alias) {
-		Optional<String> ip = lookupService.findIpByAlias(alias);
-		if(ip.isPresent())
-			return new RestTemplate().getForObject("http://" + ip + "/", String.class);
+		Optional<SensorLookup> optional = lookupService.findByAlias(alias);
+		if (optional.isPresent())
+			return new RestTemplate().getForObject("http://" + optional.get().getId().getAddress().getIp() + "?id={id}", String.class, optional.get().getId().getId());
 		else
 			return "Invalid sensor";
 	}

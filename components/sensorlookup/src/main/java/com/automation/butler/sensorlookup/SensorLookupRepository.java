@@ -42,4 +42,6 @@ public interface SensorLookupRepository extends CrudRepository<SensorLookup, Sen
 	@Query(value = "SELECT ip FROM device_address da, sensor_lookup sl WHERE sl.alias =?1 and sl.address_mac = da.mac",
 			nativeQuery = true)
 	Optional<String> findIpByAlias(String alias);
+
+    Optional<SensorLookup> findByAlias(String alias);
 }

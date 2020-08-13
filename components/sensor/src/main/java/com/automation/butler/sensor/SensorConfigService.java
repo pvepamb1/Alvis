@@ -37,7 +37,7 @@ public abstract class SensorConfigService<T extends CrudRepository<U, SensorLook
         }
     }
 
-    public JsonNode getConfigAsJsonById(SensorLookupID id) {
+    public JsonNode getConfigAsJsonByIdWithoutAddress(SensorLookupID id) {
         Optional<U> config = repo.findById(id);
         JsonNode jsonNode = new ObjectMapper().valueToTree(config.orElse(null));
         for (JsonNode node : jsonNode) { //need to think of a better way
@@ -45,6 +45,12 @@ public abstract class SensorConfigService<T extends CrudRepository<U, SensorLook
                 ((ObjectNode) node).remove("address");
         }
         return jsonNode;
+    }
+
+    public SensorConfig getConfigAsJsonById(SensorLookupID id) {
+        return repo.findById(id).orElse(null);
+        //Optional<U> config = repo.findById(id);
+        //return new ObjectMapper().valueToTree(config.orElse(null));
     }
 
     public Optional<U> getConfigById(SensorLookupID id) {
@@ -56,6 +62,7 @@ public abstract class SensorConfigService<T extends CrudRepository<U, SensorLook
     }
 
     public void saveConfig(JsonNode jsonNode) throws JsonProcessingException {
+
         U obj = new ObjectMapper().treeToValue(jsonNode, clazz);
         repo.save(obj);
     }

@@ -53,6 +53,10 @@ public class SensorLookupService {
         return repository.findByMac(mac);
     }
 
+    public Optional<SensorLookup> findByAlias(String alias) {
+        return repository.findByAlias(alias);
+    }
+
     public Optional<String> findIpByAlias(String alias) {
         return repository.findIpByAlias(alias);
     }
