@@ -5,6 +5,8 @@ import com.automation.butler.deviceaddress.DeviceAddressService;
 import com.automation.butler.enums.SensorType;
 import com.automation.butler.sensor.SensorConfig;
 import com.automation.butler.sensorlookup.SensorLookup;
+import com.automation.butler.sensorlookup.SensorLookupViews;
+import com.fasterxml.jackson.annotation.JsonView;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +40,9 @@ public class SensorDataController {
 	//the following is garbage code. No denying it, it's pure trash. Will revisit later to fix
 	//re-writing the client to poll periodically would be a better approach
 	@PostMapping(value = "/config")
-	public ResponseEntity<List<JsonNode>> getConfig(@RequestBody ConfigRequest configRequest) {
-		List<JsonNode> configList = new ArrayList<>();
+    @JsonView(SensorLookupViews.Id.class)
+    public ResponseEntity<List<SensorConfig>> getConfig(@RequestBody ConfigRequest configRequest) {
+        List<SensorConfig> configList = new ArrayList<>();
 		DeviceAddress address = new DeviceAddress(configRequest.getMac(), configRequest.getIp(), null);
 		addressService.store(address);
 		service.createUnmappedIfIdNonExistent(address, configRequest.getIds());
@@ -51,7 +54,7 @@ public class SensorDataController {
 			if (sensorLookup.isPresent()) {
 				SensorType type = sensorLookup.get().getType();
 				if (type != null) {
-					configList.add(getConfigService(type).getConfigAsJsonByIdWithoutAddress(sensorLookup.get().getId()));
+                    configList.add(getConfigService(type).getConfigById(sensorLookup.get().getId()).orElse(null));
 				} else {
 					return new ResponseEntity<>(new ArrayList<>(), HttpStatus.NOT_FOUND); // all or nothing
 				}
@@ -66,6 +69,7 @@ public class SensorDataController {
 	}
 
 	@GetMapping(value = "/unmapped") //needs to be secured
+    @JsonView(SensorLookupViews.Address.class)
 	@ResponseStatus(HttpStatus.OK)
 	public Iterable<SensorLookup> retrieveUnmapped() {
 		return service.retrieveUnmapped();
@@ -94,12 +98,12 @@ public class SensorDataController {
 	}
 
 	@GetMapping(value = "/{alias}/config")
+    @JsonView(SensorLookupViews.OnlyConfig.class)
 	@ResponseStatus(HttpStatus.OK)
 	public SensorConfig getSensorConfig(@PathVariable String alias) {
 		Optional<SensorLookup> optional = service.getSensorLookupByAlias(alias);
-		return optional.map(sensorLookup ->
-				getConfigService(sensorLookup.getType())
-						.getConfigAsJsonById(sensorLookup.getId()))
+        return optional.flatMap(sensorLookup -> getConfigService(sensorLookup.getType())
+                .getConfigById(sensorLookup.getId()))
 				.orElse(null);
 	}
 
@@ -108,7 +112,7 @@ public class SensorDataController {
 	public void updateSensorConfig(@PathVariable String alias, @RequestBody JsonNode body) throws JsonProcessingException {
 		Optional<SensorLookup> optional = service.getSensorLookupByAlias(alias);
 		if (optional.isPresent()) {
-			getConfigService(optional.get().getType()).saveConfig(body);
+            getConfigService(optional.get().getType()).saveConfig(body, optional.get().getId());
 			new RestTemplate().getForObject("http://" + optional.get().getId().getAddress().getIp() + "/reset", String.class);
 		}
 	}

@@ -1,6 +1,7 @@
 package com.automation.butler.sensorlookup;
 
 import com.automation.butler.deviceaddress.DeviceAddress;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,8 +22,11 @@ public class SensorLookupID implements Serializable {
 
 	@ManyToOne
 	@JoinColumn
+    @JsonView(SensorLookupViews.Address.class)
 	private DeviceAddress address;
+
 	@Column(length = 5)
+    @JsonView(SensorLookupViews.Id.class)
 	private String id;
 
 }

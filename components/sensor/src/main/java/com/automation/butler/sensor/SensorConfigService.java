@@ -3,9 +3,9 @@ package com.automation.butler.sensor;
 import com.automation.butler.enums.SensorType;
 import com.automation.butler.sensorlookup.SensorLookupID;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.InjectableValues;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,22 +37,6 @@ public abstract class SensorConfigService<T extends CrudRepository<U, SensorLook
         }
     }
 
-    public JsonNode getConfigAsJsonByIdWithoutAddress(SensorLookupID id) {
-        Optional<U> config = repo.findById(id);
-        JsonNode jsonNode = new ObjectMapper().valueToTree(config.orElse(null));
-        for (JsonNode node : jsonNode) { //need to think of a better way
-            if (node.get("address") != null)
-                ((ObjectNode) node).remove("address");
-        }
-        return jsonNode;
-    }
-
-    public SensorConfig getConfigAsJsonById(SensorLookupID id) {
-        return repo.findById(id).orElse(null);
-        //Optional<U> config = repo.findById(id);
-        //return new ObjectMapper().valueToTree(config.orElse(null));
-    }
-
     public Optional<U> getConfigById(SensorLookupID id) {
         return repo.findById(id);
     }
@@ -61,9 +45,9 @@ public abstract class SensorConfigService<T extends CrudRepository<U, SensorLook
         repo.save(obj);
     }
 
-    public void saveConfig(JsonNode jsonNode) throws JsonProcessingException {
-
-        U obj = new ObjectMapper().treeToValue(jsonNode, clazz);
+    public void saveConfig(JsonNode jsonNode, SensorLookupID id) throws JsonProcessingException {
+        InjectableValues inject = new InjectableValues.Std().addValue(SensorLookupID.class, id);
+        U obj = new ObjectMapper().reader(inject).treeToValue(jsonNode, clazz);
         repo.save(obj);
     }
 
