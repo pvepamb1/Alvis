@@ -17,6 +17,6 @@ class LdrConfig extends SensorConfig {
 
     int minThreshold = 200;
     int maxThreshold = 600;
-    char currentState = 'N';
+    boolean wasHigh = false;
     int sensorDelay = 10000;
 }

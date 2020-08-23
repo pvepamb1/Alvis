@@ -40,17 +40,17 @@ public class LdrNotifier {
             Optional<LdrConfig> configOptional = configService.getConfigById(lookupID);
             if (configOptional.isPresent()) {
                 LdrConfig config = configOptional.get();
-                if (Integer.parseInt(ldr.getValue()) >= config.getMaxThreshold() && config.getCurrentState() == 'N') {
+                if (ldr.getValue() >= config.getMaxThreshold() && !config.isWasHigh()) {
                     String message = alias + " has been turned ON. Value: " + ldr.getValue();
                     log.info("{} value above max threshold of {}", alias, config.getMaxThreshold());
                     publisher.publish(new SensorMailEvent(alias, message));
-                    config.setCurrentState('Y');
+                    config.setWasHigh(true);
                     configService.saveConfig(config);
-                } else if (Integer.parseInt(ldr.getValue()) <= config.getMinThreshold() && config.getCurrentState() == 'Y') {
+                } else if (ldr.getValue() <= config.getMinThreshold() && config.isWasHigh()) {
                     String message = alias + " has been turned OFF. Value: " + ldr.getValue();
                     log.info("{} value below min threshold of {}", alias, config.getMinThreshold());
                     publisher.publish(new SensorMailEvent(alias, message));
-                    config.setCurrentState('N');
+                    config.setWasHigh(false);
                     configService.saveConfig(config);
                 }
             }
