@@ -1,8 +1,10 @@
 package com.automation.butler;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.File;
@@ -18,6 +20,8 @@ import java.io.File;
 @EnableScheduling
 @SpringBootApplication
 public class ButlerService {
+	@Autowired
+	private ApplicationContext context;
 
 	private static final String CONFIG_DIR = System.getenv("HOME") + "/.homeauto/config/";
 	

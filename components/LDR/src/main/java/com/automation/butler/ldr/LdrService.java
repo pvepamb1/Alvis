@@ -1,23 +1,18 @@
 package com.automation.butler.ldr;
 
-import lombok.extern.slf4j.Slf4j;
+import com.automation.butler.enums.SensorType;
+import com.automation.butler.sensor.SensorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
-@Slf4j
-@Service
-public class LdrService {
+import static com.automation.butler.enums.SensorType.LDR;
 
-    private final LdrRepository ldrRepository;
+@Service
+public class LdrService extends SensorService<LdrRepository, LdrDTO, SensorType> {
 
     @Autowired
-    public LdrService(LdrRepository ldrRepository) {
-        this.ldrRepository = ldrRepository;
+    public LdrService(@Autowired LdrRepository repo, @Autowired ApplicationEventPublisher eventPublisher) {
+        super(repo, LdrDTO.class, LDR, eventPublisher);
     }
-
-    void store(LdrDTO value) {
-        log.info("Storing {}", value);
-        ldrRepository.save(value);
-    }
-
 }

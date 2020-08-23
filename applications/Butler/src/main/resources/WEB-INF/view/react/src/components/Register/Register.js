@@ -15,8 +15,8 @@ class Register extends React.Component {
 
     async handleRefresh(event){
         event.preventDefault();
-        let sensorData = await axios.get("api/sensors/unmapped");
-        let types = await axios.get("api/sensors/types");
+        let sensorData = await axios.get("http://localhost:8080/api/sensors/unmapped");
+        let types = await axios.get("http://localhost:8080/api/sensors/types");
         let options = types.data.map((obj,index) =>(<option value={obj} key={index}>{obj}</option>));
         let sensorValues = [];
         for(let val of sensorData.data){
@@ -50,8 +50,8 @@ class Register extends React.Component {
     }
 
     async submitValues(){
-           await axios.put('api/sensors', this.state.final);
-           this.setState({sensors:<tr></tr>});
+           await axios.put('http://localhost:8080/api/sensors', this.state.final);
+           this.setState({sensors:<tr></tr>, final:[]});
     }
 
     render(){

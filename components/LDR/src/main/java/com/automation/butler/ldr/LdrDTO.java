@@ -22,6 +22,9 @@ class LdrDTO extends Sensor {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
 	private int primaryId;
+
+	@Column(length = 5)
+	private int value;
 	
 	@UpdateTimestamp
 	private LocalDateTime updateDateTime;

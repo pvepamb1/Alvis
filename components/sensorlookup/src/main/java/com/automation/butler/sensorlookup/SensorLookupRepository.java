@@ -1,12 +1,13 @@
 package com.automation.butler.sensorlookup;
 
-import java.util.Optional;
-
 import com.automation.butler.enums.SensorType;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Specifies methods used to obtain and modify sensor-lookup related information
@@ -27,6 +28,10 @@ public interface SensorLookupRepository extends CrudRepository<SensorLookup, Sen
 	@Query(value = "SELECT * FROM sensor_lookup sensor WHERE sensor.address_mac= ?1 and sensor.id= ?2",
 			nativeQuery = true)
 	Optional<SensorLookup> findByMacAndId(String mac, String id);
+
+    @Query(value = "SELECT * FROM sensor_lookup sensor WHERE sensor.address_mac= ?1",
+            nativeQuery = true)
+    List<Optional<SensorLookup>> findByMac(String mac);
 	
 	@Transactional
 	@Modifying
@@ -37,4 +42,6 @@ public interface SensorLookupRepository extends CrudRepository<SensorLookup, Sen
 	@Query(value = "SELECT ip FROM device_address da, sensor_lookup sl WHERE sl.alias =?1 and sl.address_mac = da.mac",
 			nativeQuery = true)
 	Optional<String> findIpByAlias(String alias);
+
+    Optional<SensorLookup> findByAlias(String alias);
 }
