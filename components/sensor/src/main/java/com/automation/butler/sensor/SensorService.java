@@ -12,11 +12,11 @@ import org.springframework.data.repository.CrudRepository;
 
 @Slf4j
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class SensorService<T extends CrudRepository<U, String>, U extends Sensor, V extends SensorType> {
+public abstract class SensorService<T extends CrudRepository<U, ?>, U extends Sensor> {
 
     protected T repo;
     private Class<U> clazz;
-    private V type;
+    private SensorType type;
     private ApplicationEventPublisher eventPublisher;
 
     public void save(JsonNode body) {

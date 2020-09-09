@@ -1,4 +1,4 @@
-package com.automation.butler.ldr;
+package com.automation.butler.mic;
 
 import com.automation.butler.sensor.Sensor;
 import lombok.AllArgsConstructor;
@@ -15,17 +15,16 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-class LdrDTO extends Sensor {
+class MicDTO extends Sensor {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	@Column(name = "id")
-	private int primaryId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id")
+    private int primaryId;
 
     @Column(length = 4)
-	private int value;
-	
-	@UpdateTimestamp
-	private LocalDateTime updateDateTime;
-	
+    private int value;
+
+    @UpdateTimestamp
+    private LocalDateTime updateDateTime;
 }

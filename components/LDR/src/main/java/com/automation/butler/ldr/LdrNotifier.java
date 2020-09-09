@@ -30,12 +30,11 @@ public class LdrNotifier {
     @EventListener
     public void notifyUser(LdrDTO ldr) {
         SensorLookupID lookupID;
-        String alias;
         Optional<SensorLookup> lookupOptional = lookupService.findById(ldr.getMac(), ldr.getId());
         if (lookupOptional.isPresent()) {
             SensorLookup lookup = lookupOptional.get();
             lookupID = lookup.getId();
-            alias = lookup.getAlias();
+            String alias = lookup.getAlias();
 
             Optional<LdrConfig> configOptional = configService.getConfigById(lookupID);
             if (configOptional.isPresent()) {

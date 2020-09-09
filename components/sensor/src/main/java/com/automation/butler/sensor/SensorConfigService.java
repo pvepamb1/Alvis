@@ -18,11 +18,11 @@ import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class SensorConfigService<T extends CrudRepository<U, SensorLookupID>, U extends SensorConfig, V extends SensorType> {
+public abstract class SensorConfigService<T extends CrudRepository<U, SensorLookupID>, U extends SensorConfig> {
 
     protected T repo;
     private Class<U> clazz;
-    private V type;
+    private SensorType type;
     private ApplicationEventPublisher eventPublisher;
 
     public void createDefaultConfig(SensorLookupID id) {
