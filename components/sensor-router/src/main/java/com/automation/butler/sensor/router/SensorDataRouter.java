@@ -17,28 +17,28 @@ import java.util.Map;
 @Component
 public class SensorDataRouter {
 
-    private static final Map<SensorType, SensorService<? extends CrudRepository, ? extends Sensor, ? extends SensorType>> serviceCache = new EnumMap<>(SensorType.class);
-    private static final Map<SensorType, SensorConfigService<? extends CrudRepository, ? extends SensorConfig, ? extends SensorType>> configServiceCache = new EnumMap<>(SensorType.class);
+    private static final Map<SensorType, SensorService<? extends CrudRepository<?,?>, ? extends Sensor>> serviceCache = new EnumMap<>(SensorType.class);
+    private static final Map<SensorType, SensorConfigService<? extends CrudRepository<?,?>, ? extends SensorConfig>> configServiceCache = new EnumMap<>(SensorType.class);
     @Autowired
-    private List<SensorService<? extends CrudRepository, ? extends Sensor, ? extends SensorType>> services;
+    private List<SensorService<? extends CrudRepository<?,?>, ? extends Sensor>> services;
     @Autowired
-    private List<SensorConfigService<? extends CrudRepository, ? extends SensorConfig, ? extends SensorType>> configServices;
+    private List<SensorConfigService<? extends CrudRepository<?,?>, ? extends SensorConfig>> configServices;
 
-    static SensorService<? extends CrudRepository, ? extends Sensor, ? extends SensorType> getService(SensorType type) {
+    static SensorService<? extends CrudRepository<?,?>, ? extends Sensor> getService(SensorType type) {
         return serviceCache.get(type);
     }
 
-    static SensorConfigService<? extends CrudRepository, ? extends SensorConfig, ? extends SensorType> getConfigService(SensorType type) {
+    static SensorConfigService<? extends CrudRepository<?,?>, ? extends SensorConfig> getConfigService(SensorType type) {
         return configServiceCache.get(type);
     }
 
     @PostConstruct
     public void initCache() {
-        for (SensorService<? extends CrudRepository, ? extends Sensor, ? extends SensorType> service : services) {
+        for (SensorService<? extends CrudRepository<?,?>, ? extends Sensor> service : services) {
             serviceCache.put(service.getType(), service);
         }
 
-        for (SensorConfigService<? extends CrudRepository, ? extends SensorConfig, ? extends SensorType> configService : configServices) {
+        for (SensorConfigService<? extends CrudRepository<?,?>, ? extends SensorConfig> configService : configServices) {
             configServiceCache.put(configService.getType(), configService);
         }
     }
