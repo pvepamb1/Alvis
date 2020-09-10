@@ -11,7 +11,6 @@ import javax.persistence.Entity;
 @Data
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 class MicConfig extends SensorConfig {
 }
