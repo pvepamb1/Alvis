@@ -1,4 +1,4 @@
-rootProject.name = 'HomeAutomation-Java'
+rootProject.name = 'Home-Automation'
 include "applications:butler"
 include "components:ui"
 include "components:user"

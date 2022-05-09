@@ -1,6 +1,6 @@
 dependencies {
     implementation project(':components:sensor')
-    compile project(":components:deviceaddress")
-    compile project(":components:enums")
-    compile project(":components:ldr")
+    implementation project(":components:deviceaddress")
+    implementation project(":components:enums")
+    implementation project(":components:ldr")
 }

@@ -1,4 +1,4 @@
 dependencies {
-    compile project(":components:enums")
-    compile project(":components:deviceaddress")
+    implementation project(":components:enums")
+    api project(":components:deviceaddress")
 }
