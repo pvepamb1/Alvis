@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  butler:
+    build: .
+    #environment:
+      # Uncomment the following if you need to connect to a local instance of a db server
+      #- CONTAINER=host
+      #- SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/home_dev?useSSL=false&allowPublicKeyRetrieval=true
+      #- SPRING_DATASOURCE_USERNAME=root
+      #- SPRING_DATASOURCE_PASSWORD=password
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    networks:
+      - test
+
+  db:
+    image: arm64v8/mysql:oracle
+    networks:
+      - test
+    environment:
+      #- MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=myapp
+      - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+networks:
+  test:
