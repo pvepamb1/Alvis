@@ -1,10 +1,8 @@
 package com.automation.butler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.File;
@@ -20,22 +18,23 @@ import java.io.File;
 @EnableScheduling
 @SpringBootApplication
 public class ButlerService {
-	@Autowired
-	private ApplicationContext context;
 
 	private static final String CONFIG_DIR = System.getenv("HOME") + "/.homeauto/config/";
 	
 	public static void main(String[] args) {
-		
-		//Terminate program if loading config dir encounters issues
-		if(!validateConfigDir()) {
+
+		// identify if the app is running on a container like docker
+		String containerType = System.getenv("CONTAINER");
+
+		// Terminate program if running on host(not container) and loading config dir encounters issues
+		if("host".equals(containerType) && !validateConfigDir()) {
             log.error("Config directory error: {}", CONFIG_DIR);
 			System.exit(0);
 		}
 		
 		//load application and db props from servlet root and $HOME
         new SpringApplicationBuilder(ButlerService.class)
-				.properties("spring.config.name:application,db", "spring.config.location:classpath:/," + CONFIG_DIR)
+				.properties("host".equals(containerType)?"spring.config.location:classpath:/," + CONFIG_DIR:"")
 				.build()
 				.run(args);
 	}
@@ -44,8 +43,10 @@ public class ButlerService {
 	private static boolean validateConfigDir() {
 		File folder = new File(CONFIG_DIR);
 		if(!folder.exists()) {
+			log.debug("Creating Config directory..");
 			return folder.mkdirs();
 		}
+		log.debug("Config directory found!");
 		return true;
 	}
 }

@@ -4,5 +4,6 @@ dependencies {
     implementation project(':components:deviceaddress')
     implementation project(':components:scheduled')
     implementation project(':components:sensor-router')
+    runtimeOnly ('mysql:mysql-connector-java')
     //compile("org.springframework.boot:spring-boot-starter-security")
 }
