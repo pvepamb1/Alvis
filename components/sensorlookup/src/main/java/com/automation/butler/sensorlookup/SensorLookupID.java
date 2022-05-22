@@ -1,6 +1,7 @@
 package com.automation.butler.sensorlookup;
 
 import com.automation.butler.deviceaddress.DeviceAddress;
+import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,14 +16,17 @@ import java.io.Serializable;
 @Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-class SensorLookupID implements Serializable {
+public class SensorLookupID implements Serializable {
 
 	private static final long serialVersionUID = -7769334084663720925L;
 
 	@ManyToOne
 	@JoinColumn
+    @JsonView(SensorLookupViews.Address.class)
 	private DeviceAddress address;
+
 	@Column(length = 5)
+    @JsonView(SensorLookupViews.Id.class)
 	private String id;
 
 }

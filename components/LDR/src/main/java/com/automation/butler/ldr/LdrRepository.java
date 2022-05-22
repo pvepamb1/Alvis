@@ -7,6 +7,5 @@ import org.springframework.data.repository.CrudRepository;
  * which is stored in the database.
  */
 
-interface LdrRepository extends CrudRepository<LdrDTO, String> {
-
+interface LdrRepository extends CrudRepository<LdrDTO, Integer> {
 }

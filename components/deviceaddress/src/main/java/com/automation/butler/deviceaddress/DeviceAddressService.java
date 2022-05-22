@@ -9,9 +9,13 @@ public class DeviceAddressService {
 	@Autowired
 	private DeviceAddressRepository macRepository;
 
-    void store(DeviceAddress address) {
+    public void store(DeviceAddress address) {
 		macRepository.save(address);
 	}
+
+    boolean exists(DeviceAddress address) {
+        return macRepository.existsById(address.getMac());
+    }
 	
 	public Iterable<DeviceAddress> retrieveAll(){
 		return macRepository.findAll();

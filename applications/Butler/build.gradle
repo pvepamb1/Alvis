@@ -1,5 +1,0 @@
-dependencies {
-    compile project(":components:deviceaddress")
-    compile project(":components:scheduled")
-    compile("org.springframework.boot:spring-boot-starter-security")
-}

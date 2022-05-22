@@ -1,0 +1,9 @@
+subprojects {
+    apply plugin: 'java-library'
+
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:${springBootVersion}"
+        }
+    }
+}

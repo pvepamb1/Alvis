@@ -1,87 +1,58 @@
 package com.automation.butler.ldr;
 
-import com.automation.butler.notification.Mailer;
-import com.automation.butler.sensor.SensorConfigBean;
+import com.automation.butler.notification.SensorMailEvent;
+import com.automation.butler.sensor.SensorEventPublisher;
 import com.automation.butler.sensorlookup.SensorLookup;
+import com.automation.butler.sensorlookup.SensorLookupID;
 import com.automation.butler.sensorlookup.SensorLookupService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Properties;
+import java.util.Optional;
 
 @Slf4j
 @Component
 public class LdrNotifier {
 
-    private final Mailer mailer;
-    private final SensorConfigBean configBean;
     private final SensorLookupService lookupService;
-    @Value("${mailTo:}")
-    private String to;
+    private final LdrConfigService configService;
+    private final SensorEventPublisher publisher;
 
     @Autowired
-    public LdrNotifier(Mailer mailer, SensorConfigBean configBean, SensorLookupService lookupService) {
-        this.mailer = mailer;
-        this.configBean = configBean;
+    public LdrNotifier(SensorLookupService lookupService, LdrConfigService configService, SensorEventPublisher publisher) {
         this.lookupService = lookupService;
+        this.configService = configService;
+        this.publisher = publisher;
     }
 
-    void notifyUser(LdrDTO ldr) {
+    @EventListener
+    public void notifyUser(LdrDTO ldr) {
+        SensorLookupID lookupID;
+        Optional<SensorLookup> lookupOptional = lookupService.findById(ldr.getMac(), ldr.getId());
+        if (lookupOptional.isPresent()) {
+            SensorLookup lookup = lookupOptional.get();
+            lookupID = lookup.getId();
+            String alias = lookup.getAlias();
 
-        String identifier = lookupService.findById(ldr.getMac(), ldr.getId()).get().getAlias();
-        Properties prop = configBean.getAllProperties().get(identifier);
-        if (prop != null) {
-            if (Integer.parseInt(ldr.getValue()) > Integer.parseInt(prop.getProperty("max"))
-                    && prop.getProperty("emailSent").equals("false")) {
-                log.info("{} value above {} and haven't notified user previously. Notifying user at {}", identifier,
-                        prop.getProperty("max"), to);
-                mailer.sendSimpleMessage(to, "LDR", ldr.getValue());
-                writeToFile(identifier, prop, "true");
-
-            } else if (Integer.parseInt(ldr.getValue()) < Integer.parseInt(prop.getProperty("min"))) {
-                log.info("{} value below {}. resetting mail state to false", identifier, prop.getProperty("min"));
-                writeToFile(identifier, prop, "false");
+            Optional<LdrConfig> configOptional = configService.getConfigById(lookupID);
+            if (configOptional.isPresent()) {
+                LdrConfig config = configOptional.get();
+                if (ldr.getValue() >= config.getMaxThreshold() && !config.isWasHigh()) {
+                    String message = alias + " has been turned ON. Value: " + ldr.getValue();
+                    log.info("{} value above max threshold of {}", alias, config.getMaxThreshold());
+                    publisher.publish(new SensorMailEvent(alias, message));
+                    config.setWasHigh(true);
+                    configService.saveConfig(config);
+                } else if (ldr.getValue() <= config.getMinThreshold() && config.isWasHigh()) {
+                    String message = alias + " has been turned OFF. Value: " + ldr.getValue();
+                    log.info("{} value below min threshold of {}", alias, config.getMinThreshold());
+                    publisher.publish(new SensorMailEvent(alias, message));
+                    config.setWasHigh(false);
+                    configService.saveConfig(config);
+                }
             }
-        }
-    }
-
-    private void writeToFile(String identifier, Properties prop, String value) {
-        OutputStream output;
-
-        try {
-
-            output = new FileOutputStream(System.getenv("HOME") + "/.homeauto/config/" + identifier + ".properties");
-            prop.setProperty("emailSent", value);
-            prop.store(output, null);
-
-        } catch (IOException io) {
-            log.debug("Couldn't write to file");
-            log.debug("{}", io.getMessage());
-        }
-    }
-
-    void createConfigFile(SensorLookup sensor) {
-        OutputStream output;
-        Properties prop = new Properties();
-        String identifier = sensor.getAlias();
-
-        try {
-
-            output = new FileOutputStream(System.getenv("HOME") + "/.homeauto/config/" + identifier + ".properties");
-            prop.setProperty("emailSent", "false");
-            prop.setProperty("min", "200");
-            prop.setProperty("max", "700");
-            prop.store(output, null);
-            configBean.getAllProperties().put(identifier, prop);
-
-        } catch (IOException io) {
-            log.debug("Couldn't create config file");
-            log.debug("{}", io.getMessage());
         }
     }
 }

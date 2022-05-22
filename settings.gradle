@@ -1,12 +1,12 @@
-rootProject.name = 'HomeAutomation-Java'
+rootProject.name = 'Home-Automation'
 include "applications:butler"
-include "components:ui"
 include "components:user"
 include "components:ldr"
+include "components:mic"
 include "components:deviceaddress"
 include "components:sensor"
 include "components:sensorlookup"
+include "components:sensor-router"
 include "components:notification"
 include "components:enums"
-include "components:util"
 include "components:scheduled"

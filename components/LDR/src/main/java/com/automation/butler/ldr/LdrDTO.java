@@ -15,13 +15,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@AttributeOverride(name = "value", column = @Column(length = 4))
 class LdrDTO extends Sensor {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "id")
 	private int primaryId;
+
+    @Column(length = 4)
+	private int value;
 	
 	@UpdateTimestamp
 	private LocalDateTime updateDateTime;

@@ -2,10 +2,9 @@ package com.automation.butler.scheduled;
 
 import com.automation.butler.deviceaddress.DeviceAddress;
 import com.automation.butler.deviceaddress.DeviceAddressService;
-import com.automation.butler.notification.Mailer;
+import com.automation.butler.notification.HeartbeatMailEvent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -19,14 +18,12 @@ public final class HeartbeatCheck {
     private static final long FIXED_DELAY_VALUE = 60; //in minutes
     private static long checkDelay = 60; // in minutes
     private final DeviceAddressService service;
-    private final Mailer mailer;
-    @Value("${mailTo:}")
-    private String to;
+    private final HeartbeatEventPublisher publisher;
 
     @Autowired
-    public HeartbeatCheck(DeviceAddressService service, Mailer mailer) {
+    public HeartbeatCheck(DeviceAddressService service, HeartbeatEventPublisher publisher) {
         this.service = service;
-        this.mailer = mailer;
+        this.publisher = publisher;
     }
 
     public static long getCheckDelay() {
@@ -42,9 +39,8 @@ public final class HeartbeatCheck {
         for (DeviceAddress device : service.retrieveAll()) {
             if (ChronoUnit.MINUTES.between(device.getUpdateDateTime(), LocalDateTime.now()) > checkDelay) {
                 log.debug("{} with ip address {} couldn't be reached", device.getMac(), device.getIp());
-                log.debug("mailing {} about unreachable device", to);
-                mailer.sendSimpleMessage(to, "Device down!",
-                        device.getMac() + " with ip " + device.getIp() + " couldn't be reached");
+                publisher.publish(new HeartbeatMailEvent("Device Down!", device.getMac() +
+                        " with ip address " + device.getIp() + " couldn't be reached"));
             }
         }
     }

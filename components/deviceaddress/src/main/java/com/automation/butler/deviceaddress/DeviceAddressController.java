@@ -13,7 +13,8 @@ public class DeviceAddressController {
 
     @PostMapping("/heartbeat")
 	public void updatePulse(@RequestBody DeviceAddress body) {
-		service.store(body);
+		if (service.exists(body))
+			service.store(body);
 	}
 
 }
