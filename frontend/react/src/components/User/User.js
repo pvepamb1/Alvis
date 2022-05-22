@@ -13,7 +13,7 @@ class User extends React.Component{
 
     async handleSubmit(event){
         event.preventDefault();
-        await axios.post("api/users", this.state);
+        await axios.post("http://localhost:8080/api/users", this.state);
         this.setState({name:'', email:'', password:'', success:'Successfully submitted'});
     }
 

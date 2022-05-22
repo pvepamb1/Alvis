@@ -2,18 +2,19 @@ version: '3.8'
 
 services:
   butler:
-    build: .
     image: prasennavenkatesh/homeauto
     #environment:
       # Uncomment the following if you need to connect to a local instance of a db server
       #- CONTAINER=host
-      #- SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/home_dev?useSSL=false&allowPublicKeyRetrieval=true
+      #- SPRING_DATASOURCE_URL=jdbc:mysql://host.docker.internal:3306/<db_name>?useSSL=false&allowPublicKeyRetrieval=true
       #- SPRING_DATASOURCE_USERNAME=root
       #- SPRING_DATASOURCE_PASSWORD=password
     ports:
       - "8080:8080"
     depends_on:
+      # Comment out '-db' if you are connecting to a local db server
       - db
+      - ui
     networks:
       - test
 
@@ -22,8 +23,15 @@ services:
     networks:
       - test
     environment:
-      #- MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=myapp
       - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+
+  ui:
+    image: prasennavenkatesh/homeauto-ui
+    ports:
+      - "80:80"
+    networks:
+      - test
+
 networks:
   test:
