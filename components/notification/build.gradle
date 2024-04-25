@@ -1,5 +1,0 @@
-dependencies {
-    api project(":components:user")
-    api project(":components:enums")
-    implementation('org.springframework.boot:spring-boot-starter-mail')
-}

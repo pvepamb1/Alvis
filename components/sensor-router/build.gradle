@@ -1,6 +1,0 @@
-dependencies {
-    implementation project(':components:sensor')
-    implementation project(":components:deviceaddress")
-    implementation project(":components:enums")
-    implementation project(":components:ldr")
-}

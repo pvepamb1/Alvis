@@ -1,4 +1,0 @@
-dependencies {
-    api project(":components:deviceaddress")
-    api project(":components:notification")
-}
