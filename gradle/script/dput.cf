@@ -1,6 +1,0 @@
-[homeauto]
-fqdn = ppa.launchpad.net
-method = sftp
-incoming = ~prasenna/homeauto/
-login = prasenna
-allow_unsigned_uploads = 1
